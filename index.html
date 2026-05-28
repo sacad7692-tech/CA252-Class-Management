@@ -152,7 +152,7 @@
         }
 
         .btn-reverse-action {
-            background-color: #34495e;
+            background-color: #27ae60;
             color: white;
             border: none;
             padding: 6px 12px;
@@ -162,7 +162,7 @@
         }
 
         .btn-reverse-action:hover {
-            background-color: #1a252f;
+            background-color: #219653;
         }
 
         .badge {
@@ -276,8 +276,10 @@
 </footer>
 
 <script>
-    // Password-ka rasmiga ah waa kan: Sacad2026
+    // Password-ka guud ee guddiga
     const ADMIN_PASSWORD = "Sacad2026"; 
+    // PIN-ka cusub ee adiga kuu gooniga ah ee dhibcaha lagu soo celiyo
+    const MASTER_RETURN_PIN = "2028"; 
 
     const officialStudentsList = [
         { id: "C1250082", name: "Hamza Mohamednur yare Ali" },
@@ -452,15 +454,26 @@
     }
 
     function removeViolation(index) {
-        if (students[index].conduct < 100) {
-            students[index].conduct += 5; 
-            if (students[index].violations > 0) {
-                students[index].violations -= 1; 
+        const pinInput = prompt("🔑 Geli PIN-ka gaarka ah ee Master Admin si aad dhibcaha u soo celiso:");
+        
+        if (pinInput === null) return; 
+
+        if (pinInput === MASTER_RETURN_PIN) {
+            if (students[index].conduct < 100) {
+                students[index].conduct += 5; 
+                if (students[index].violations > 0) {
+                    students[index].violations -= 1; 
+                }
+                if (students[index].conduct > 100) students[index].conduct = 100;
+                saveData();
+                renderAdminTable();
+                filterAdminTable();
+                alert("✅ Dhibcihii ardayga si guul leh ayaa loogu soo celiyey!");
+            } else {
+                alert("ℹ️ Ardaygan dhibcihiisu horey ayay 100% u ahaayeen.");
             }
-            if (students[index].conduct > 100) students[index].conduct = 100;
-            saveData();
-            renderAdminTable();
-            filterAdminTable();
+        } else {
+            alert("❌ PIN-ku waa khaldan yahay! Adigu awood uma heshid inaad dhibco soo celiso.");
         }
     }
 
