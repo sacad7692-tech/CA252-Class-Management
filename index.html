@@ -24,9 +24,19 @@
         header {
             background-color: var(--primary-color);
             color: white;
-            padding: 20px;
+            padding: 25px 20px;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        header p {
+            margin: 5px 0 0 0;
+            opacity: 0.9;
         }
 
         .container {
@@ -167,6 +177,17 @@
             animation: blink 1.5s infinite;
         }
 
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #2c3e50;
+            color: white;
+            font-weight: bold;
+            border-radius: 0 0 8px 8px;
+            border-top: 3px solid #2ecc71;
+        }
+
         @keyframes blink {
             0% { opacity: 1; }
             50% { opacity: 0.5; }
@@ -187,6 +208,7 @@
         <button class="tab-btn" onclick="openAdminPanel()">Dashboard-ka Guddiga (Admin)</button>
     </div>
 
+    <!-- 1. BOGGA ARDAYGA -->
     <div id="student-panel" class="panel active">
         <h2>Ugu Kaalay Xaaladda Dhaqankaaga</h2>
         <p style="color: #666; font-size: 14px;">(Waxaad ku raadin kartaa ID-gaaga oo qura ama Magacaaga oo qura)</p>
@@ -203,6 +225,7 @@
         <div id="student-result" style="display: none;"></div>
     </div>
 
+    <!-- 2. DASHBOARD-KA GUDDIGA (ADMIN) -->
     <div id="admin-panel" class="panel">
         <h2>Maamulidda Sharciga Fasalka (74 Arday)</h2>
         <p>Kaliya Guddiga fasalka ayaa xaq u leh inay halkan dhibco ka gooyaan ardayga sawaxanka sameeya.</p>
@@ -229,11 +252,14 @@
     </div>
 </div>
 
+<!-- FOOTER: Magacaaga oo toos u dhex yaala -->
+<footer>
+    💻 Designed & Developed by Sacad Siciid Caraaye © 2026
+</footer>
+
 <script>
-    // Password-ka ay guddigu ku gelayaan dashboard-ka
     const ADMIN_PASSWORD = "ca252guddi"; 
 
-    // Liiska rasmiga ah ee 74-ka arday ee aad soo dirtay
     const officialStudentsList = [
         { id: "C1250082", name: "Hamza Mohamednur yare Ali" },
         { id: "C1250083", name: "Hassan Nor Adan" },
@@ -317,7 +343,7 @@
         students = officialStudentsList.map(s => ({
             id: s.id,
             name: s.name,
-            conduct: 100, // Dhamaan ardayda waxay ku bilaabanayaan 100%
+            conduct: 100, 
             violations: 0
         }));
         saveData();
@@ -332,7 +358,7 @@
         if (passwordInput === ADMIN_PASSWORD) {
             switchTab('admin-panel');
         } else if (passwordInput !== null) {
-            alert("Password-ku waa khaldan yahay! Kaliya guddiga fasalka ayaa geli kara.");
+            alert("❌ Password-ku waa khaldan yahay! Kaliya guddiga fasalka ayaa geli kara.");
         }
     }
 
@@ -356,9 +382,9 @@
         tbody.innerHTML = '';
 
         students.forEach((student, index) => {
-            let statusBadge = `<span class="badge safe">Aan Khatar Jiirin</span>`;
+            let statusBadge = `<span class="badge safe">✅ Badbaado</span>`;
             if (student.conduct <= 25) {
-                statusBadge = `<span class="badge risk">RISKI (≤25%)</span>`;
+                statusBadge = `<span class="badge risk">🚨 RISKI (≤25%)</span>`;
             }
 
             tbody.innerHTML += `
@@ -367,17 +393,16 @@
                     <td class="st-id">${student.id}</td>
                     <td class="st-name">${student.name}</td>
                     <td><strong style="color: ${student.conduct <= 25 ? 'red' : 'green'}">${student.conduct}%</strong></td>
-                    <td><span style="color: red; font-weight: bold;">${student.violations} jeer</span></td>
+                    <td><span style="color: red; font-weight: bold;">⚠️ ${student.violations} jeer</span></td>
                     <td>${statusBadge}</td>
                     <td>
-                        <button class="btn-warning-action" onclick="addViolation(${index})">Qalad / Sawaxan (-5%)</button>
+                        <button class="btn-warning-action" onclick="addViolation(${index})">❌ Qalad / Sawaxan (-5%)</button>
                     </td>
                 </tr>
             `;
         });
     }
 
-    // Filter-ka loogu talagalay in Admin-ku si fudud ugu dhex raadiyo 74 arday
     function filterAdminTable() {
         const query = document.getElementById('admin-search').value.toLowerCase();
         const rows = document.querySelectorAll('.admin-row');
@@ -400,7 +425,6 @@
             if (students[index].conduct < 0) students[index].conduct = 0;
             saveData();
             renderAdminTable();
-            // Haddii uu raadin ku jiray inuu sii jiro filter-ka
             filterAdminTable();
         }
     }
@@ -412,11 +436,10 @@
 
         if (!inputId && !inputName) {
             resultDiv.style.display = 'block';
-            resultDiv.innerHTML = `<p style="color: red; font-weight: bold; margin-top:15px;">Fadlan geli ID-gaaga ama Magacaaga si aad u raadiso.</p>`;
+            resultDiv.innerHTML = `<p style="color: red; font-weight: bold; margin-top:15px;">❌ Fadlan geli ID-gaaga ama Magacaaga si aad u raadiso.</p>`;
             return;
         }
 
-        // Raadi ardayga (Haddii uu mid uun qoro ID ama Magac waa uu helayaa)
         const student = students.find(s => {
             const matchId = inputId && s.id.toLowerCase() === inputId;
             const matchName = inputName && s.name.toLowerCase().includes(inputName);
@@ -425,7 +448,7 @@
 
         if (!student) {
             resultDiv.style.display = 'block';
-            resultDiv.innerHTML = `<p style="color: red; font-weight: bold; margin-top:15px;">Waa cilad! Ma jirto xog u dhabata ID-ga ama Magaca aad gelisay. Fadlan hubi.</p>`;
+            resultDiv.innerHTML = `<p style="color: red; font-weight: bold; margin-top:15px;">❌ Waa cilad! Ma jirto xog u dhabata ID-ga ama Magaca aad gelisay. Fadlan hubi.</p>`;
             return;
         }
 
@@ -435,18 +458,18 @@
         if (student.conduct <= 25) {
             warningMessage = `
                 <div class="alert-box">
-                    ⚠️ DIGNIIN KULUL: Fadlan riski aad kujirta is xali! Waxaad fasalka ka samaysay sawaxan badan, dhibcahaaga dhaqankuna waxay hoos u dhaceen ${student.conduct}%.
+                    🚨 DIGNIIN KULUL: Fadlan riski aad kujirta is xali! Waxaad fasalka ka samaysay sawaxan badan, dhibcahaaga dhaqankuna waxay hoos u dhaceen ${student.conduct}%.
                 </div>
             `;
         } else {
-            warningMessage = `<p style="color: green; font-weight: bold; margin-top:15px;">Xaaladda dhaqankaagu waa deggantahay. Waxaad haysataa ${student.conduct}%.</p>`;
+            warningMessage = `<p style="color: green; font-weight: bold; margin-top:15px;">✅ Xaaladda dhaqankaagu waa deggantahay. Waxaad haysataa ${student.conduct}%.</p>`;
         }
 
         resultDiv.innerHTML = `
             <div class="student-card">
                 <h3>Xogta Dhaqanka Ardayga: ${student.name}</h3>
                 <p><strong>ID-gaaga:</strong> ${student.id}</p>
-                <p><strong>Tirada sawaxanka lagugu qoray:</strong> <span style="color: red; font-weight:bold;">${student.violations} jeer</span></p>
+                <p><strong>Tirada sawaxanka lagugu qoray:</strong> <span style="color: red; font-weight:bold;">⚠️ ${student.violations} jeer</span></p>
                 <p><strong>Boqolleyda Dhaqanka:</strong> <span style="font-size: 20px; font-weight: bold; color: ${student.conduct <= 25 ? 'red' : 'green'}">${student.conduct}%</span></p>
                 ${warningMessage}
             </div>
