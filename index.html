@@ -1,27 +1,458 @@
-<input type="text" id="search" placeholder="Raadi Arday">
+<!DOCTYPE html>
+<html lang="so">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CA252 Class Behavior Management System</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --warning-color: #f1c40f;
+            --light-bg: #f8f9fa;
+        }
 
-<div class="card">
-<h2 id="totalStudents">0</h2>
-<p>Tirada Ardayda</p>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: #e0e0e0;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .panel {
+            display: none;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button.btn-submit {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #eef2f3;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .btn-warning-action {
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .badge.safe { background-color: var(--success-color); }
+        .badge.risk { background-color: var(--danger-color); }
+
+        .student-card {
+            background: #fff;
+            border: 2px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .alert-box {
+            background-color: #fde8e8;
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+            padding: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 15px;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>CA252 Class Behavior Management System</h1>
+    <p>Nidaamka Guddiga Fasalka ee Dabagalka Sawaxanka & Sharciga</p>
+</header>
+
+<div class="container">
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('student-panel')">Bogga Ardayga</button>
+        <button class="tab-btn" onclick="openAdminPanel()">Dashboard-ka Guddiga (Admin)</button>
+    </div>
+
+    <div id="student-panel" class="panel active">
+        <h2>Ugu Kaalay Xaaladda Dhaqankaaga</h2>
+        <p style="color: #666; font-size: 14px;">(Waxaad ku raadin kartaa ID-gaaga oo qura ama Magacaaga oo qura)</p>
+        <div class="form-group">
+            <label>Geli ID-gaaga:</label>
+            <input type="text" id="search-id" placeholder="Tusaale: C1250095">
+        </div>
+        <div class="form-group">
+            <label>Geli Magacaaga:</label>
+            <input type="text" id="search-name" placeholder="Geli magacaaga">
+        </div>
+        <button class="btn-submit" onclick="checkStudentStatus()">Eeg Xogta</button>
+
+        <div id="student-result" style="display: none;"></div>
+    </div>
+
+    <div id="admin-panel" class="panel">
+        <h2>Maamulidda Sharciga Fasalka (74 Arday)</h2>
+        <p>Kaliya Guddiga fasalka ayaa xaq u leh inay halkan dhibco ka gooyaan ardayga sawaxanka sameeya.</p>
+        
+        <div class="search-box">
+            <label><strong>Si dhakhso ah u raadi arday:</strong></label>
+            <input type="text" id="admin-search" onkeyup="filterAdminTable()" placeholder="Ku qor magac ama ID si aad u hesho...">
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>ID</th>
+                    <th>Magaca Ardayga</th>
+                    <th>Dhibcaha Dhaqanka (%)</th>
+                    <th>Tirada Khaladaadka</th>
+                    <th>Xaaladda</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="admin-table-body"></tbody>
+        </table>
+    </div>
 </div>
 
-<div class="card">
-<h2 id="warningStudents">0</h2>
-<p>25 Warning Gaaray</p>
-</div>
+<script>
+    // Password-ka ay guddigu ku gelayaan dashboard-ka
+    const ADMIN_PASSWORD = "ca252guddi"; 
 
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>Magac</th>
-<th>Good</th>
-<th>Warning</th>
-<th>Actions</th>
-</tr>
-</thead>
+    // Liiska rasmiga ah ee 74-ka arday ee aad soo dirtay
+    const officialStudentsList = [
+        { id: "C1250082", name: "Hamza Mohamednur yare Ali" },
+        { id: "C1250083", name: "Hassan Nor Adan" },
+        { id: "C1250084", name: "Mohamed Hashim Mohamed" },
+        { id: "C1250085", name: "Anab Abdullahi Hussein" },
+        { id: "C1250086", name: "Sacdia Nur Mohamed" },
+        { id: "C1250087", name: "Garad Hussein Nur" },
+        { id: "C1250088", name: "Khadra Mohamed Ahmed" },
+        { id: "C1250089", name: "Ayan Mohamed Abdi" },
+        { id: "C1250090", name: "Jabir Farah Abdulle" },
+        { id: "C1250091", name: "Sabirin Hassan Hashi" },
+        { id: "C1250092", name: "Ayub Said Ibrahim" },
+        { id: "C1250093", name: "Nurto Abdullahi Dhicisow" },
+        { id: "C1250094", name: "Shafie Abdihalim Ali" },
+        { id: "C1250095", name: "Sa'ad Said Araye" },
+        { id: "C1250096", name: "Nasro Mohamed Abdi" },
+        { id: "C1250097", name: "Hamdi Hassan Jimale" },
+        { id: "C1250101", name: "Fadumo Abdinasir Hassan" },
+        { id: "C1250102", name: "Nasteha Salad Dahir" },
+        { id: "C1250103", name: "Zeinab Mohamed Ali" },
+        { id: "C1250104", name: "Rayan Mohamed Hassan" },
+        { id: "C1250105", name: "Mohamed Said Nur" },
+        { id: "C1250106", name: "Mohamed Osman Omar" },
+        { id: "C1250107", name: "Abdullahi Muse Hersi" },
+        { id: "C1250108", name: "Sadik Ahmed Osman" },
+        { id: "C1250109", name: "Ifrah Ahmed Osman" },
+        { id: "C1250110", name: "Abukar Abdikani Abdikadir" },
+        { id: "C1250111", name: "Abdiwahid Osman Hamud" },
+        { id: "C1250112", name: "Hodman Mohamed Heydar" },
+        { id: "C1250114", name: "Mohamed Abdi Mohamed" },
+        { id: "C1250115", name: "Abdirahman Abdirashid Mohamed" },
+        { id: "C1250118", name: "Faysal Abdisalan Ali" },
+        { id: "C1250119", name: "Hashi Abdihamid Hashi" },
+        { id: "C1250120", name: "Nawaaf Ahmed Mohamed" },
+        { id: "C1250122", name: "Sahal Abshir Sahal" },
+        { id: "C1250124", name: "Mohamed Muhudin Ibrahim" },
+        { id: "C1250125", name: "Mohamed Mukhtar Abdi" },
+        { id: "C1250126", name: "Abdihafid Mohamed Hussein" },
+        { id: "C1250128", name: "Mohamed Omar Ali" },
+        { id: "C1250129", name: "Usame Abdullahi Mohamed" },
+        { id: "C1250131", name: "Ismail Abdi Waberi" },
+        { id: "C1250133", name: "Abdullahi Ahmed Mohamed" },
+        { id: "C1250134", name: "Seynab Abdullahi Dirie" },
+        { id: "C1250136", name: "Abdirisak Mohamed Abdiwahid" },
+        { id: "C1250137", name: "Mohamed Muhudin Abdikarim" },
+        { id: "C1250138", name: "sakariye Khalif Ali" },
+        { id: "C1250140", name: "Ayub Abdi Hussein" },
+        { id: "C1250141", name: "Shueib Ali Shaale" },
+        { id: "C1250143", name: "Hassan Abdikhadir Hassan" },
+        { id: "C1250144", name: "Sayid Ali Isse Hirsi" },
+        { id: "C1250145", name: "Salma Farah Madar" },
+        { id: "C1250147", name: "Amino Mahad Ahmed" },
+        { id: "C1250148", name: "Ali Yusuf Ali" },
+        { id: "C1250151", name: "Abdullahi Ahmed Yusuf" },
+        { id: "C1250153", name: "Ruwieda Hassan Adan" },
+        { id: "C1250156", name: "Khadijo Mohamed Dahir" },
+        { id: "C1250157", name: "Sahro Ahmed Warsame" },
+        { id: "C1250160", name: "Mascud Hassan Abdulqadir" },
+        { id: "C1250256", name: "Hayat Abdullahi Ali" },
+        { id: "C1250258", name: "Jabir Abdullahi Hassan" },
+        { id: "C1250260", name: "Abdirahman Abdullahi Mohamed" },
+        { id: "C1250264", name: "Abdirashid Mohamed Osman" },
+        { id: "C1250267", name: "Abdirizak Omar Mohamud" },
+        { id: "C1250270", name: "Shukri Abdullahi Jama" },
+        { id: "C1250271", name: "Zakarie Duran Mohamed" },
+        { id: "C1250273", name: "Ali Abdi Mohamud" },
+        { id: "C1250274", name: "Ismail Said Muse" },
+        { id: "C1250284", name: "Mohamed Abukar Mohamed" },
+        { id: "C1250289", name: "Abdullahi Mohamed Abdullahi" },
+        { id: "C1250323", name: "Ahmed Abdikarim Osman" },
+        { id: "C1250528", name: "Sabirin Abdirizak Mohamed" },
+        { id: "C1250529", name: "Ruweyda Ahmed Mohamed" },
+        { id: "C1250531", name: "Abdullahi Mohamed Ahmed" },
+        { id: "C1250533", name: "Miski Hassan Mohamed" },
+        { id: "C1250535", name: "Muhsin Abdulkadir Yusuf" }
+    ];
 
-<tbody id="studentsTable">
+    let students = JSON.parse(localStorage.getItem('guddi_real_students'));
 
-</tbody>
-</table>
+    if (!students) {
+        students = officialStudentsList.map(s => ({
+            id: s.id,
+            name: s.name,
+            conduct: 100, // Dhamaan ardayda waxay ku bilaabanayaan 100%
+            violations: 0
+        }));
+        saveData();
+    }
+
+    function saveData() {
+        localStorage.setItem('guddi_real_students', JSON.stringify(students));
+    }
+
+    function openAdminPanel() {
+        const passwordInput = prompt("Fadlan geli Password-ka Guddiga Fasalka:");
+        if (passwordInput === ADMIN_PASSWORD) {
+            switchTab('admin-panel');
+        } else if (passwordInput !== null) {
+            alert("Password-ku waa khaldan yahay! Kaliya guddiga fasalka ayaa geli kara.");
+        }
+    }
+
+    function switchTab(panelId) {
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        
+        document.getElementById(panelId).classList.add('active');
+        
+        const tabs = document.querySelectorAll('.tab-btn');
+        if(panelId === 'admin-panel') {
+            tabs[1].classList.add('active');
+            renderAdminTable();
+        } else {
+            tabs[0].classList.add('active');
+        }
+    }
+
+    function renderAdminTable() {
+        const tbody = document.getElementById('admin-table-body');
+        tbody.innerHTML = '';
+
+        students.forEach((student, index) => {
+            let statusBadge = `<span class="badge safe">Aan Khatar Jiirin</span>`;
+            if (student.conduct <= 25) {
+                statusBadge = `<span class="badge risk">RISKI (≤25%)</span>`;
+            }
+
+            tbody.innerHTML += `
+                <tr class="admin-row">
+                    <td>${index + 1}</td>
+                    <td class="st-id">${student.id}</td>
+                    <td class="st-name">${student.name}</td>
+                    <td><strong style="color: ${student.conduct <= 25 ? 'red' : 'green'}">${student.conduct}%</strong></td>
+                    <td><span style="color: red; font-weight: bold;">${student.violations} jeer</span></td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        <button class="btn-warning-action" onclick="addViolation(${index})">Qalad / Sawaxan (-5%)</button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    // Filter-ka loogu talagalay in Admin-ku si fudud ugu dhex raadiyo 74 arday
+    function filterAdminTable() {
+        const query = document.getElementById('admin-search').value.toLowerCase();
+        const rows = document.querySelectorAll('.admin-row');
+
+        rows.forEach(row => {
+            const idText = row.querySelector('.st-id').textContent.toLowerCase();
+            const nameText = row.querySelector('.st-name').textContent.toLowerCase();
+            if (idText.includes(query) || nameText.includes(query)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    function addViolation(index) {
+        if (students[index].conduct > 0) {
+            students[index].conduct -= 5; 
+            students[index].violations += 1; 
+            if (students[index].conduct < 0) students[index].conduct = 0;
+            saveData();
+            renderAdminTable();
+            // Haddii uu raadin ku jiray inuu sii jiro filter-ka
+            filterAdminTable();
+        }
+    }
+
+    function checkStudentStatus() {
+        const inputId = document.getElementById('search-id').value.trim().toLowerCase();
+        const inputName = document.getElementById('search-name').value.trim().toLowerCase();
+        const resultDiv = document.getElementById('student-result');
+
+        if (!inputId && !inputName) {
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `<p style="color: red; font-weight: bold; margin-top:15px;">Fadlan geli ID-gaaga ama Magacaaga si aad u raadiso.</p>`;
+            return;
+        }
+
+        // Raadi ardayga (Haddii uu mid uun qoro ID ama Magac waa uu helayaa)
+        const student = students.find(s => {
+            const matchId = inputId && s.id.toLowerCase() === inputId;
+            const matchName = inputName && s.name.toLowerCase().includes(inputName);
+            return matchId || matchName;
+        });
+
+        if (!student) {
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `<p style="color: red; font-weight: bold; margin-top:15px;">Waa cilad! Ma jirto xog u dhabata ID-ga ama Magaca aad gelisay. Fadlan hubi.</p>`;
+            return;
+        }
+
+        resultDiv.style.display = 'block';
+        
+        let warningMessage = '';
+        if (student.conduct <= 25) {
+            warningMessage = `
+                <div class="alert-box">
+                    ⚠️ DIGNIIN KULUL: Fadlan riski aad kujirta is xali! Waxaad fasalka ka samaysay sawaxan badan, dhibcahaaga dhaqankuna waxay hoos u dhaceen ${student.conduct}%.
+                </div>
+            `;
+        } else {
+            warningMessage = `<p style="color: green; font-weight: bold; margin-top:15px;">Xaaladda dhaqankaagu waa deggantahay. Waxaad haysataa ${student.conduct}%.</p>`;
+        }
+
+        resultDiv.innerHTML = `
+            <div class="student-card">
+                <h3>Xogta Dhaqanka Ardayga: ${student.name}</h3>
+                <p><strong>ID-gaaga:</strong> ${student.id}</p>
+                <p><strong>Tirada sawaxanka lagugu qoray:</strong> <span style="color: red; font-weight:bold;">${student.violations} jeer</span></p>
+                <p><strong>Boqolleyda Dhaqanka:</strong> <span style="font-size: 20px; font-weight: bold; color: ${student.conduct <= 25 ? 'red' : 'green'}">${student.conduct}%</span></p>
+                ${warningMessage}
+            </div>
+        `;
+    }
+</script>
+
+</body>
+</html>
