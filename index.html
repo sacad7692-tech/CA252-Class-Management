@@ -1,23 +1,27 @@
-<!DOCTYPE html>
-<html lang="so">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CA252 Dashboard</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<header>
-<h1>Jamhuuriya University - CA252</h1>
-<input id="search" placeholder="Raadi arday...">
-</header>
-<div class="stats">
-<div class="card"><h3>Tirada Ardayda</h3><span id="count"></span></div>
+<input type="text" id="search" placeholder="Raadi Arday">
+
+<div class="card">
+<h2 id="totalStudents">0</h2>
+<p>Tirada Ardayda</p>
 </div>
+
+<div class="card">
+<h2 id="warningStudents">0</h2>
+<p>25 Warning Gaaray</p>
+</div>
+
 <table>
-<thead><tr><th>ID</th><th>Magac</th><th>Good</th><th>Warning</th><th>Ficil</th></tr></thead>
-<tbody id="students"></tbody>
+<thead>
+<tr>
+<th>ID</th>
+<th>Magac</th>
+<th>Good</th>
+<th>Warning</th>
+<th>Actions</th>
+</tr>
+</thead>
+
+<tbody id="studentsTable">
+
+</tbody>
 </table>
-<script src="script.js"></script>
-</body>
-</html>
