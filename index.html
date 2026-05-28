@@ -276,9 +276,7 @@
 </footer>
 
 <script>
-    // Password-ka guud ee guddiga
     const ADMIN_PASSWORD = "Sacad2026"; 
-    // PIN-ka cusub ee adiga kuu gooniga ah ee dhibcaha lagu soo celiyo
     const MASTER_RETURN_PIN = "2028"; 
 
     const officialStudentsList = [
@@ -419,7 +417,7 @@
                     <td>
                         <div class="action-buttons">
                             <button class="btn-warning-action" onclick="addViolation(${index})">❌ Qalad (-5%)</button>
-                            <button class="btn-reverse-action" onclick="removeViolation(${index})">🔄 Celi (+5%)</button>
+                            <button class="btn-reverse-action" onclick="removeViolation(${index})">🔄 Celi</button>
                         </div>
                     </td>
                 </tr>
@@ -453,25 +451,66 @@
         }
     }
 
+    // SHAQADA SOO CELINTA EE QAABKA OPTIONS-KA LEH
     function removeViolation(index) {
-        const pinInput = prompt("🔑 Geli PIN-ka gaarka ah ee Master Admin si aad dhibcaha u soo celiso:");
+        const pinInput = prompt("🔑 Geli PIN-ka gaarka ah ee Master Admin:");
         
         if (pinInput === null) return; 
 
         if (pinInput === MASTER_RETURN_PIN) {
-            if (students[index].conduct < 100) {
-                students[index].conduct += 5; 
-                if (students[index].violations > 0) {
-                    students[index].violations -= 1; 
+            const optionInput = prompt(
+                "Dooro qaabka aad dhibcaha u soo celineyso:\n\n" +
+                "1) Wada celi dhammaan dhibihii laga jaray (Ka dhig 100%)\n" +
+                "2) Hal khalad qura ka saar (+5%)\n" +
+                "3) Geli dhibco adigu aad dooratay (1 ilaa 100)"
+            );
+
+            if (optionInput === null) return;
+
+            if (optionInput === "1") {
+                // Wada celi dhamaan dhibihii
+                students[index].conduct = 100;
+                students[index].violations = 0;
+                alert("✅ Dhibcihii ardayga si guul leh ayaa loogu wada celiyey 100%!");
+            } 
+            else if (optionInput === "2") {
+                // Hal khalad kaliya ka saar
+                if (students[index].conduct < 100) {
+                    students[index].conduct += 5;
+                    if (students[index].violations > 0) {
+                        students[index].violations -= 1;
+                    }
+                    if (students[index].conduct > 100) students[index].conduct = 100;
+                    alert("✅ Hal khalad ayaa la saaray (+5%)!");
+                } else {
+                    alert("ℹ️ Ardaygan dhibcihiisu horey ayay 100% u ahaayeen.");
                 }
-                if (students[index].conduct > 100) students[index].conduct = 100;
-                saveData();
-                renderAdminTable();
-                filterAdminTable();
-                alert("✅ Dhibcihii ardayga si guul leh ayaa loogu soo celiyey!");
-            } else {
-                alert("ℹ️ Ardaygan dhibcihiisu horey ayay 100% u ahaayeen.");
+            } 
+            else if (optionInput === "3") {
+                // Dooro inta u dhaxaysa 1 ilaa 100
+                const customPoints = parseInt(prompt("Geli dhibcaha dhaqanka ee cusub (1 ilaa 100):"));
+                
+                if (isNaN(customPoints) || customPoints < 1 || customPoints > 100) {
+                    alert("❌ Fadlan nambar sax ah oo u dhaxeeya 1 ilaa 100 geli!");
+                    return;
+                }
+                
+                students[index].conduct = customPoints;
+                // Si otomaatig ah u xisaabi khaladaadka ku haboon (haddii 100% laga dhigo khaladaadku waa 0)
+                if (customPoints === 100) {
+                    students[index].violations = 0;
+                }
+                alert(`✅ Dhibcaha dhaqanka ardayga waxaa laga dhigay ${customPoints}%!`);
+            } 
+            else {
+                alert("❌ Doorasho khaldan! Fadlan dooro nambarada 1, 2, ama 3.");
+                return;
             }
+
+            saveData();
+            renderAdminTable();
+            filterAdminTable();
+
         } else {
             alert("❌ PIN-ku waa khaldan yahay! Adigu awood uma heshid inaad dhibco soo celiso.");
         }
