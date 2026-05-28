@@ -40,7 +40,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1050px;
             margin: 30px auto;
             padding: 20px;
             background: white;
@@ -136,6 +136,11 @@
             background-color: #f1f1f1;
         }
 
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
         .btn-warning-action {
             background-color: var(--danger-color);
             color: white;
@@ -144,6 +149,20 @@
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
+        }
+
+        .btn-reverse-action {
+            background-color: #34495e;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-reverse-action:hover {
+            background-color: #1a252f;
         }
 
         .badge {
@@ -244,7 +263,7 @@
                     <th>Dhibcaha Dhaqanka (%)</th>
                     <th>Tirada Khaladaadka</th>
                     <th>Xaaladda</th>
-                    <th>Action</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody id="admin-table-body"></tbody>
@@ -252,7 +271,6 @@
     </div>
 </div>
 
-<!-- FOOTER: Magacaaga oo toos u dhex yaala -->
 <footer>
     💻 Designed & Developed by Sacad Siciid Caraaye © 2026
 </footer>
@@ -396,7 +414,10 @@
                     <td><span style="color: red; font-weight: bold;">⚠️ ${student.violations} jeer</span></td>
                     <td>${statusBadge}</td>
                     <td>
-                        <button class="btn-warning-action" onclick="addViolation(${index})">❌ Qalad / Sawaxan (-5%)</button>
+                        <div class="action-buttons">
+                            <button class="btn-warning-action" onclick="addViolation(${index})">❌ Qalad (-5%)</button>
+                            <button class="btn-reverse-action" onclick="removeViolation(${index})">🔄 Celi (+5%)</button>
+                        </div>
                     </td>
                 </tr>
             `;
@@ -423,6 +444,20 @@
             students[index].conduct -= 5; 
             students[index].violations += 1; 
             if (students[index].conduct < 0) students[index].conduct = 0;
+            saveData();
+            renderAdminTable();
+            filterAdminTable();
+        }
+    }
+
+    // SHAQADA DHIBCIHI DIB LOOGU SOO CELINAYO ARDAYGA
+    function removeViolation(index) {
+        if (students[index].conduct < 100) {
+            students[index].conduct += 5; 
+            if (students[index].violations > 0) {
+                students[index].violations -= 1; 
+            }
+            if (students[index].conduct > 100) students[index].conduct = 100;
             saveData();
             renderAdminTable();
             filterAdminTable();
