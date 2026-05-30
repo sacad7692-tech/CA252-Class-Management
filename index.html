@@ -282,7 +282,6 @@
             border: 1px solid #e2e8f0;
             padding: 25px;
             border-radius: 20px;
-            margin-top: 25px;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
             text-align: center;
             animation: fadeIn 0.3s ease-in-out;
@@ -317,6 +316,24 @@
             font-size: 0.95rem;
             line-height: 1.5;
             box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.05);
+        }
+
+        /* Reset Button Stylish */
+        .btn-reset {
+            margin-top: 20px;
+            background: #f1f5f9;
+            color: var(--text-main);
+            border: 1px solid #cbd5e1;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.2s ease;
+        }
+
+        .btn-reset:hover {
+            background: #e2e8f0;
         }
 
         /* Footer Branding */
@@ -387,23 +404,26 @@
         <button class="tab-btn" onclick="openAdminPanel()">Dashboard-ka Guddiga (Admin)</button>
     </div>
 
-    <!-- 1. BOGGA ARDAYGA -->
+    <!-- 1. BOGGA ARDAYGA (Halkan waxaa ku dhex jira Sanduuqa iyo Natiijada labadaba) -->
     <div id="student-panel" class="panel active">
-        <h2>Ugu Kaalay Xaaladda Dhaqankaaga</h2>
-        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Xogtu si toos ah ayay u soo baxaysaa marka aad qorayso Magacaaga ama ID-gaaga.</p>
-        
-        <div class="form-group">
-            <label>Ku qor ID ama Magacaaga halkan:</label>
-            <input type="text" id="search-input" placeholder="Tusaale: C1250095 ama Sa'ad..." oninput="checkStudentStatus()">
+        <div id="student-search-area">
+            <h2>Ugu Kaalay Xaaladda Dhaqankaaga</h2>
+            <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Xogtu si toos ah ayay u soo baxaysaa marka aad qorayso Magacaaga ama ID-gaaga.</p>
+            
+            <div class="form-group">
+                <label>Ku qor ID ama Magacaaga halkan:</label>
+                <input type="text" id="search-input" placeholder="Tusaale: C1250095 ama Sa'ad..." oninput="checkStudentStatus()">
+            </div>
         </div>
 
-        <div id="student-result"></div>
+        <!-- Kaarka xogtu wuxuu si toos ah u dul fuulayaa meeshii raadinta -->
+        <div id="student-result" style="display: none;"></div>
     </div>
 
     <!-- 2. DASHBOARD-KA GUDDIGA (ADMIN) -->
     <div id="admin-panel" class="panel">
         <h2>Maamulidda Sharciga Fasalka (74 Arday)</h2>
-        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Kaliya Guddiga fasalka ayaa xaq u leh inay halkan dhibco ka gooyaan ardayga sawaxanka sameeya.</p>
+        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Kaliya Guddiga fasalka ayaa xaq u lena inay halkan dhibco ka gooyaan ardayga sawaxanka sameeya.</p>
         
         <div class="search-box">
             <label><strong>Si dhakhso ah u raadi arday:</strong></label>
@@ -562,6 +582,7 @@
             renderAdminTable();
         } else {
             tabs[0].classList.add('active');
+            resetSearch(); // Dib u nadiifi raadinta marka bogga ardayga lagu soo laapto
         }
     }
 
@@ -680,60 +701,69 @@
         }
     }
 
-    // SHAQADA LIVE SEARCH-KA AH (AUTO-LOAD)
+    // SHAQADA CUSUB: Halkan xogtu waxay si toos ah ugu dulumaysaa sanduuqa raadinta
     function checkStudentStatus() {
         const query = document.getElementById('search-input').value.trim().toLowerCase();
+        const searchArea = document.getElementById('student-search-area');
         const resultDiv = document.getElementById('student-result');
 
-        // Haddii sanduuqu maran yahay, nadiifi shaashadda
         if (query === "") {
             resultDiv.style.display = 'none';
             resultDiv.innerHTML = "";
             return;
         }
 
+        // Waxaan raadineynaa ardayga haddii ID-gu ama Magacu sax yahay
         const student = students.find(s => 
             s.id.toLowerCase() === query || 
-            s.name.toLowerCase().includes(query)
+            (query.length >= 3 && s.name.toLowerCase().includes(query)) // Waxaa laga rabaa ugu yaraan 3 xaraf si uusan khalad u qaban
         );
 
-        resultDiv.style.display = 'block';
+        if (student) {
+            // Qari sanduuqii raadinta si xogta qofka oo qura u soo harto
+            searchArea.style.display = 'none';
+            resultDiv.style.display = 'block';
+            
+            let warningMessage = '';
+            if (student.conduct <= 25) {
+                warningMessage = `
+                    <div class="alert-box">
+                        🚨 DIGNIIN KULUL: Fadlan riski aad kujirta is xali! Waxaad fasalka ka samaysay sawaxan badan, dhibcahaaga dhaqankuna waxay hoos u dhaceen ${student.conduct}%.
+                    </div>
+                `;
+            } else {
+                warningMessage = `<p style="color: var(--success); font-weight: bold; margin-top:20px;">✅ Xaaladda dhaqankaagu waa deggantahay. Waxaad haysataa ${student.conduct}%.</p>`;
+            }
 
-        if (!student) {
-            resultDiv.innerHTML = `<p style="color: var(--danger); font-weight: bold; margin-top:20px; text-align:center;">❌ Ma jirto xog u dhabata ID-ga ama Magaca aad gelisay.</p>`;
-            return;
-        }
-        
-        let warningMessage = '';
-        if (student.conduct <= 25) {
-            warningMessage = `
-                <div class="alert-box">
-                    🚨 DIGNIIN KULUL: Fadlan riski aad kujirta is xali! Waxaad fasalka ka samaysay sawaxan badan, dhibcahaaga dhaqankuna waxay hoos u dhaceen ${student.conduct}%.
+            resultDiv.innerHTML = `
+                <div class="student-card">
+                    <h3>Xogta Dhaqanka Ardayga</h3>
+                    <div class="student-info-row">
+                        <span><strong>Magaca:</strong></span>
+                        <span>${student.name}</span>
+                    </div>
+                    <div class="student-info-row">
+                        <span><strong>ID-ga:</strong></span>
+                        <span style="color: var(--primary); font-weight: 600;">${student.id}</span>
+                    </div>
+                    <div class="student-info-row">
+                        <span><strong>Boqolleyda Dhaqanka:</strong></span>
+                        <span style="font-size: 1.2rem; font-weight: 700; color: ${student.conduct <= 25 ? 'var(--danger)' : 'var(--success)'}">${student.conduct}%</span>
+                    </div>
+                    ${warningMessage}
+                    <button class="btn-reset" onclick="resetSearch()">🔄 Raadi Arday Kale</button>
                 </div>
             `;
-        } else {
-            warningMessage = `<p style="color: var(--success); font-weight: bold; margin-top:20px;">✅ Xaaladda dhaqankaagu waa deggantahay. Waxaad haysataa ${student.conduct}%.</p>`;
         }
+    }
 
-        // Halkan waxaa si buuxda looga saaray khadkii khaladaadka (violations) si ardaygu uusan u arkin
-        resultDiv.innerHTML = `
-            <div class="student-card">
-                <h3>Xogta Dhaqanka Ardayga</h3>
-                <div class="student-info-row">
-                    <span><strong>Magaca:</strong></span>
-                    <span>${student.name}</span>
-                </div>
-                <div class="student-info-row">
-                    <span><strong>ID-ga:</strong></span>
-                    <span style="color: var(--primary); font-weight: 600;">${student.id}</span>
-                </div>
-                <div class="student-info-row">
-                    <span><strong>Boqolleyda Dhaqanka:</strong></span>
-                    <span style="font-size: 1.2rem; font-weight: 700; color: ${student.conduct <= 25 ? 'var(--danger)' : 'var(--success)'}">${student.conduct}%</span>
-                </div>
-                ${warningMessage}
-            </div>
-        `;
+    // Shaqada dib u soo celisa sanduuqa raadinta
+    function resetSearch() {
+        document.getElementById('search-input').value = "";
+        document.getElementById('student-search-area').style.display = 'block';
+        const resultDiv = document.getElementById('student-result');
+        resultDiv.style.display = 'none';
+        resultDiv.innerHTML = "";
     }
 </script>
 
