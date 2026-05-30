@@ -12,21 +12,22 @@
 
     <!-- Khadka isku xiraya Manifest-ka App-ka (PWA) -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#6366f1">
+    <meta name="theme-color" content="#1e3a8a">
 
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary: #a855f7;
+            /* Midabo aad u soo jiidasho leh (Premium Dark Blue & Indigo) */
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #4f46e5;
             --success: #10b981;
             --danger: #ef4444;
             --warning: #f59e0b;
-            --background: #f8fafc;
+            --background: #f4f6fa;
             --text-main: #0f172a;
             --text-muted: #64748b;
-            --gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            --gradient: linear-gradient(135deg, #1e3a8a 0%, #4f46e5 100%);
+            --card-shadow: 0 20px 40px -15px rgba(30, 58, 138, 0.15);
         }
 
         * {
@@ -47,10 +48,10 @@
         header {
             background: var(--gradient);
             color: white;
-            padding: 60px 20px;
+            padding: 70px 20px;
             text-align: center;
-            border-radius: 0 0 40px 40px;
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
+            border-radius: 0 0 50px 50px;
+            box-shadow: 0 15px 35px rgba(30, 58, 138, 0.25);
             position: relative;
             overflow: hidden;
         }
@@ -62,20 +63,21 @@
             left: -30%;
             width: 80%;
             height: 200%;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08);
             transform: rotate(35deg);
             pointer-events: none;
         }
 
         header h1 {
-            font-size: 2.2rem;
+            font-size: 2.4rem;
             font-weight: 700;
             margin-bottom: 12px;
             letter-spacing: -0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         header p {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             opacity: 0.9;
             font-weight: 500;
         }
@@ -84,11 +86,11 @@
         .container {
             width: 92%;
             max-width: 1000px;
-            margin: -30px auto 0 auto;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.95);
+            margin: -40px auto 0 auto;
+            padding: 35px;
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
-            border-radius: 24px;
+            border-radius: 30px;
             border: 1px solid rgba(255, 255, 255, 0.8);
             box-shadow: var(--card-shadow);
         }
@@ -96,30 +98,30 @@
         /* Modern Elegant Navigation Tabs */
         .tabs {
             display: flex;
-            background: #f1f5f9;
+            background: #e2e8f0;
             padding: 6px;
-            border-radius: 16px;
+            border-radius: 20px;
             gap: 6px;
             margin-bottom: 35px;
         }
 
         .tab-btn {
             flex: 1;
-            padding: 14px 16px;
+            padding: 16px 20px;
             border: none;
             background: transparent;
             cursor: pointer;
-            font-weight: 600;
-            color: var(--text-muted);
-            border-radius: 12px;
+            font-weight: 700;
+            color: #475569;
+            border-radius: 14px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 1rem;
+            font-size: 1.05rem;
         }
 
         .tab-btn.active {
             background: white;
-            color: var(--primary);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            color: var(--primary-dark);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
         }
 
         .panel {
@@ -132,9 +134,9 @@
         }
 
         h2 {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             color: #1e293b;
         }
 
@@ -153,21 +155,21 @@
 
         input {
             width: 100%;
-            padding: 14px 16px;
-            border: 2px solid #e2e8f0;
-            border-radius: 14px;
-            font-size: 1rem;
+            padding: 16px 18px;
+            border: 2px solid #cbd5e1;
+            border-radius: 16px;
+            font-size: 1.05rem;
             font-family: inherit;
             color: var(--text-main);
             background-color: #f8fafc;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
         }
 
         input:focus {
             outline: none;
             border-color: var(--primary);
             background-color: white;
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.15);
         }
 
         .search-box {
@@ -280,23 +282,24 @@
         .student-card {
             background: white;
             border: 1px solid #e2e8f0;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 15px 30px rgba(30, 58, 138, 0.08);
             text-align: center;
             animation: fadeIn 0.3s ease-in-out;
         }
 
         .student-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: #1e293b;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: #1e3a8a;
+            font-weight: 700;
         }
 
         .student-info-row {
             display: flex;
             justify-content: space-between;
-            padding: 12px 0;
+            padding: 14px 0;
             border-bottom: 1px dashed #e2e8f0;
         }
 
@@ -320,31 +323,37 @@
 
         /* Reset Button Stylish */
         .btn-reset {
-            margin-top: 20px;
+            margin-top: 25px;
             background: #f1f5f9;
             color: var(--text-main);
             border: 1px solid #cbd5e1;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 700;
             cursor: pointer;
             font-family: inherit;
             transition: 0.2s ease;
+            width: 100%;
         }
 
         .btn-reset:hover {
-            background: #e2e8f0;
+            background: #cbd5e1;
         }
 
         /* Footer Branding */
         footer {
             text-align: center;
-            margin-top: 50px;
+            margin-top: 60px;
             padding: 24px;
             color: var(--text-muted);
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-weight: 700;
+            font-size: 0.95rem;
             border-top: 1px solid #e2e8f0;
+            letter-spacing: 0.3px;
+        }
+
+        footer span {
+            color: var(--primary-dark);
         }
 
         @keyframes fadeIn {
@@ -355,11 +364,11 @@
         /* Media Queries for Mobile Screens */
         @media (max-width: 600px) {
             header {
-                padding: 45px 15px;
-                border-radius: 0 0 25px 25px;
+                padding: 55px 15px;
+                border-radius: 0 0 35px 35px;
             }
             header h1 {
-                font-size: 1.6rem;
+                font-size: 1.7rem;
             }
             header p {
                 font-size: 0.95rem;
@@ -369,24 +378,13 @@
                 width: 94%;
             }
             .tabs {
-                border-radius: 12px;
+                border-radius: 14px;
                 padding: 4px;
             }
             .tab-btn {
-                padding: 10px;
-                font-size: 0.9rem;
-                border-radius: 8px;
-            }
-            td, th {
-                padding: 12px 10px;
-            }
-            .action-buttons {
-                flex-direction: column;
-                gap: 4px;
-            }
-            .btn-warning-action, .btn-reverse-action {
-                width: 100%;
-                text-align: center;
+                padding: 12px;
+                font-size: 0.95rem;
+                border-radius: 10px;
             }
         }
     </style>
@@ -404,7 +402,7 @@
         <button class="tab-btn" onclick="openAdminPanel()">Dashboard-ka Guddiga (Admin)</button>
     </div>
 
-    <!-- 1. BOGGA ARDAYGA (Halkan waxaa ku dhex jira Sanduuqa iyo Natiijada labadaba) -->
+    <!-- 1. BOGGA ARDAYGA -->
     <div id="student-panel" class="panel active">
         <div id="student-search-area">
             <h2>Ugu Kaalay Xaaladda Dhaqankaaga</h2>
@@ -416,14 +414,13 @@
             </div>
         </div>
 
-        <!-- Kaarka xogtu wuxuu si toos ah u dul fuulayaa meeshii raadinta -->
         <div id="student-result" style="display: none;"></div>
     </div>
 
     <!-- 2. DASHBOARD-KA GUDDIGA (ADMIN) -->
     <div id="admin-panel" class="panel">
         <h2>Maamulidda Sharciga Fasalka (74 Arday)</h2>
-        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Kaliya Guddiga fasalka ayaa xaq u lena inay halkan dhibco ka gooyaan ardayga sawaxanka sameeya.</p>
+        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Kaliya Guddiga fasalka ayaa xaq u leh inay halkan dhibco ka gooyaan ardayga sawaxanka sameeya.</p>
         
         <div class="search-box">
             <label><strong>Si dhakhso ah u raadi arday:</strong></label>
@@ -450,20 +447,10 @@
 </div>
 
 <footer>
-    💻 All Copyright waxaa diyaariyay Sacad siciid caraaye
+    Designed & developed by <span>Sacad siciid caraaye</span>
 </footer>
 
-<!-- Khadka kicinaya Service Worker-ka si uu App u noqdo (PWA) -->
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js')
-        .then(reg => console.log('Service Worker Registered!', reg))
-        .catch(err => console.log('Service Worker Failed!', err));
-    });
-  }
-</script>
-
+<!-- JavaScript (Koodhkii Xogta & Isbeddelada Cusub) -->
 <script>
     const ADMIN_PASSWORD = "Sacad2026";
     const MASTER_RETURN_PIN = "2028";
@@ -566,7 +553,7 @@
         if (passwordInput === ADMIN_PASSWORD) {
             switchTab('admin-panel');
         } else if (passwordInput !== null) {
-            alert("❌ Password-ku waa khaldan yahay! Kaliya guddiga fasalka ayaa geli kara.");
+            alert("❌ Password-ku waa khaldan yahay!");
         }
     }
 
@@ -575,14 +562,13 @@
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         
         document.getElementById(panelId).classList.add('active');
-        
         const tabs = document.querySelectorAll('.tab-btn');
         if(panelId === 'admin-panel') {
             tabs[1].classList.add('active');
             renderAdminTable();
         } else {
             tabs[0].classList.add('active');
-            resetSearch(); // Dib u nadiifi raadinta marka bogga ardayga lagu soo laapto
+            resetSearch();
         }
     }
 
@@ -593,7 +579,7 @@
         students.forEach((student, index) => {
             let statusBadge = `<span class="badge safe">✅ Badbaado</span>`;
             if (student.conduct <= 25) {
-                statusBadge = `<span class="badge risk">🚨 RISKI (≤25%)</span>`;
+                statusBadge = `<span class="badge risk">🚨 RISKI</span>`;
             }
 
             tbody.innerHTML += `
@@ -601,7 +587,7 @@
                     <td>${index + 1}</td>
                     <td class="st-id" style="font-weight: 600; color: var(--primary);">${student.id}</td>
                     <td class="st-name" style="font-weight: 500;">${student.name}</td>
-                    <td><strong style="color: ${student.conduct <= 25 ? 'var(--danger)' : 'var(--success)'}; font-size: 1.05rem;">${student.conduct}%</strong></td>
+                    <td><strong style="color: ${student.conduct <= 25 ? 'var(--danger)' : 'var(--success)'};">${student.conduct}%</strong></td>
                     <td><span style="color: var(--danger); font-weight: bold;">⚠️ ${student.violations}</span></td>
                     <td>${statusBadge}</td>
                     <td>
@@ -643,65 +629,35 @@
 
     function removeViolation(index) {
         const pinInput = prompt("🔑 Geli PIN-ka gaarka ah ee Master Admin:");
-        
         if (pinInput === null) return; 
 
         if (pinInput === MASTER_RETURN_PIN) {
-            const optionInput = prompt(
-                "Dooro qaabka aad dhibcaha u soo celineyso:\n\n" +
-                "1) Wada celi dhammaan dhibihii laga jaray (Ka dhig 100%)\n" +
-                "2) Hal khalad qura ka saar (+5%)\n" +
-                "3) Geli dhibco adigu aad dooratay (1 ilaa 100)"
-            );
-
+            const optionInput = prompt("1) Wada celi dhammaan (100%)\n2) Hal khalad ka saar (+5%)\n3) Geli dhibco aad dooratay");
             if (optionInput === null) return;
 
             if (optionInput === "1") {
                 students[index].conduct = 100;
                 students[index].violations = 0;
-                alert("✅ Dhibcihii ardayga si guul leh ayaa loogu wada celiyey 100%!");
-            } 
-            else if (optionInput === "2") {
+            } else if (optionInput === "2") {
                 if (students[index].conduct < 100) {
                     students[index].conduct += 5;
-                    if (students[index].violations > 0) {
-                        students[index].violations -= 1;
-                    }
-                    if (students[index].conduct > 100) students[index].conduct = 100;
-                    alert("✅ Hal khalad ayaa la saaray (+5%)!");
-                } else {
-                    alert("ℹ️ Ardaygan dhibcihiisu horey ayay 100% u ahaayeen.");
+                    if (students[index].violations > 0) students[index].violations -= 1;
                 }
-            } 
-            else if (optionInput === "3") {
-                const customPoints = parseInt(prompt("Geli dhibcaha dhaqanka ee cusub (1 ilaa 100):"));
-                
-                if (isNaN(customPoints) || customPoints < 1 || customPoints > 100) {
-                    alert("❌ Fadlan nambar sax ah oo u dhaxeeya 1 ilaa 100 geli!");
-                    return;
+            } else if (optionInput === "3") {
+                const customPoints = parseInt(prompt("Geli dhibcaha (1-100):"));
+                if (!isNaN(customPoints) && customPoints >= 1 && customPoints <= 100) {
+                    students[index].conduct = customPoints;
+                    if (customPoints === 100) students[index].violations = 0;
                 }
-                
-                students[index].conduct = customPoints;
-                if (customPoints === 100) {
-                    students[index].violations = 0;
-                }
-                alert(`✅ Dhibcaha dhaqanka ardayga waxaa laga dhigay ${customPoints}%!`);
-            } 
-            else {
-                alert("❌ Doorasho khaldan! Fadlan dooro nambarada 1, 2, ama 3.");
-                return;
             }
-
             saveData();
             renderAdminTable();
             filterAdminTable();
-
         } else {
-            alert("❌ PIN-ku waa khaldan yahay! Adigu awood uma heshid inaad dhibco soo celiso.");
+            alert("❌ PIN khaldan!");
         }
     }
 
-    // SHAQADA CUSUB: Halkan xogtu waxay si toos ah ugu dulumaysaa sanduuqa raadinta
     function checkStudentStatus() {
         const query = document.getElementById('search-input').value.trim().toLowerCase();
         const searchArea = document.getElementById('student-search-area');
@@ -709,61 +665,41 @@
 
         if (query === "") {
             resultDiv.style.display = 'none';
-            resultDiv.innerHTML = "";
             return;
         }
 
-        // Waxaan raadineynaa ardayga haddii ID-gu ama Magacu sax yahay
         const student = students.find(s => 
             s.id.toLowerCase() === query || 
-            (query.length >= 3 && s.name.toLowerCase().includes(query)) // Waxaa laga rabaa ugu yaraan 3 xaraf si uusan khalad u qaban
+            (query.length >= 3 && s.name.toLowerCase().includes(query))
         );
 
         if (student) {
-            // Qari sanduuqii raadinta si xogta qofka oo qura u soo harto
             searchArea.style.display = 'none';
             resultDiv.style.display = 'block';
             
-            let warningMessage = '';
-            if (student.conduct <= 25) {
-                warningMessage = `
-                    <div class="alert-box">
-                        🚨 DIGNIIN KULUL: Fadlan riski aad kujirta is xali! Waxaad fasalka ka samaysay sawaxan badan, dhibcahaaga dhaqankuna waxay hoos u dhaceen ${student.conduct}%.
-                    </div>
-                `;
-            } else {
-                warningMessage = `<p style="color: var(--success); font-weight: bold; margin-top:20px;">✅ Xaaladda dhaqankaagu waa deggantahay. Waxaad haysataa ${student.conduct}%.</p>`;
-            }
+            let warningMessage = student.conduct <= 25 
+                ? `<div class="alert-box">🚨 DIGNIIN KULUL: Waxaad fasalka ka samaysay sawaxan badan, dhibcahaaga dhaqankuna waxay hoos u dhaceen ${student.conduct}%.</div>`
+                : `<p style="color: var(--success); font-weight: bold; margin-top:20px;">✅ Xaaladda dhaqankaagu waa deggantahay. Waxaad haysataa ${student.conduct}%.</p>`;
 
             resultDiv.innerHTML = `
                 <div class="student-card">
-                    <h3>Xogta Dhaqanka Ardayga</h3>
-                    <div class="student-info-row">
-                        <span><strong>Magaca:</strong></span>
-                        <span>${student.name}</span>
-                    </div>
-                    <div class="student-info-row">
-                        <span><strong>ID-ga:</strong></span>
-                        <span style="color: var(--primary); font-weight: 600;">${student.id}</span>
-                    </div>
-                    <div class="student-info-row">
-                        <span><strong>Boqolleyda Dhaqanka:</strong></span>
-                        <span style="font-size: 1.2rem; font-weight: 700; color: ${student.conduct <= 25 ? 'var(--danger)' : 'var(--success)'}">${student.conduct}%</span>
-                    </div>
+                    <h3>Xogtaada Dhaqanka</h3>
+                    <div class="student-info-row"><span><strong>Magaca:</strong></span><span>${student.name}</span></div>
+                    <div class="student-info-row"><span><strong>ID-ga:</strong></span><span style="color: var(--primary); font-weight:600;">${student.id}</span></div>
+                    <div class="student-info-row"><span><strong>Boqolleyda Dhaqanka:</strong></span><span style="font-size: 1.2rem; font-weight:700; color: ${student.conduct <= 25 ? 'var(--danger)' : 'var(--success)'}">${student.conduct}%</span></div>
                     ${warningMessage}
-                    <button class="btn-reset" onclick="resetSearch()">🔄 Raadi Arday Kale</button>
+                    <button class="btn-reset" onclick="resetSearch()">⬅ Dib u laabo</button>
                 </div>
             `;
         }
     }
 
-    // Shaqada dib u soo celisa sanduuqa raadinta
     function resetSearch() {
-        document.getElementById('search-input').value = "";
+        const inputField = document.getElementById('search-input');
+        inputField.value = "";
         document.getElementById('student-search-area').style.display = 'block';
-        const resultDiv = document.getElementById('student-result');
-        resultDiv.style.display = 'none';
-        resultDiv.innerHTML = "";
+        document.getElementById('student-result').style.display = 'none';
+        inputField.focus();
     }
 </script>
 
