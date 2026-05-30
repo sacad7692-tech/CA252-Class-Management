@@ -5,17 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CA252 Class Behavior Management System</title>
     
+    <!-- Google Fonts for Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <!-- Khadka isku xiraya Manifest-ka App-ka (PWA) -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2c3e50">
+    <meta name="theme-color" content="#6366f1">
 
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --success-color: #2ecc71;
-            --danger-color: #e74c3c;
-            --warning-color: #f1c40f;
-            --light-bg: #f8f9fa;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #a855f7;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --background: #f8fafc;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
         }
 
         * {
@@ -25,247 +36,364 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
-            color: #333;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--background);
+            color: var(--text-main);
             line-height: 1.6;
+            padding-bottom: 40px;
         }
 
+        /* Modern Gradient Header */
         header {
-            background-color: var(--primary-color);
+            background: var(--gradient);
             color: white;
-            padding: 30px 15px;
+            padding: 60px 20px;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 0 0 40px 40px;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -30%;
+            width: 80%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.05);
+            transform: rotate(35deg);
+            pointer-events: none;
         }
 
         header h1 {
-            font-size: 1.8rem;
-            margin-bottom: 8px;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
         }
 
         header p {
-            font-size: 1rem;
+            font-size: 1.1rem;
             opacity: 0.9;
+            font-weight: 500;
         }
 
+        /* Modern Layout Container */
         .container {
-            width: 95%;
-            max-width: 1100px;
-            margin: 20px auto;
-            padding: 15px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            width: 92%;
+            max-width: 1000px;
+            margin: -30px auto 0 auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: var(--card-shadow);
         }
 
+        /* Modern Elegant Navigation Tabs */
         .tabs {
             display: flex;
-            flex-direction: row;
-            gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #ddd;
-            padding-bottom: 10px;
+            background: #f1f5f9;
+            padding: 6px;
+            border-radius: 16px;
+            gap: 6px;
+            margin-bottom: 35px;
         }
 
         .tab-btn {
             flex: 1;
-            padding: 12px 10px;
+            padding: 14px 16px;
             border: none;
-            background: #e0e0e0;
+            background: transparent;
             cursor: pointer;
-            font-weight: bold;
-            border-radius: 5px;
-            transition: 0.3s;
-            font-size: 0.95rem;
-            text-align: center;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1rem;
         }
 
         .tab-btn.active {
-            background-color: var(--primary-color);
-            color: white;
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .panel {
             display: none;
+            animation: fadeIn 0.4s ease-in-out;
         }
 
         .panel.active {
             display: block;
         }
 
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1e293b;
+        }
+
+        /* Input Controls and Fields */
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-weight: 600;
             font-size: 0.95rem;
+            color: #475569;
         }
 
         input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
             font-size: 1rem;
+            font-family: inherit;
+            color: var(--text-main);
+            background-color: #f8fafc;
+            transition: all 0.2s ease;
         }
 
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Luxury Gradient Button */
         button.btn-submit {
-            background-color: var(--primary-color);
+            background: var(--gradient);
             color: white;
-            padding: 12px 20px;
+            padding: 15px 24px;
             border: none;
-            border-radius: 4px;
+            border-radius: 14px;
             cursor: pointer;
             width: 100%;
-            font-size: 1rem;
-            font-weight: bold;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: inherit;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        button.btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        button.btn-submit:active {
+            transform: translateY(0);
         }
 
         .search-box {
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: #eef2f3;
-            border-radius: 5px;
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: #f1f5f9;
+            border-radius: 16px;
         }
 
-        /* Qaybta Jadwalka ka dhigaysa mid shaashada moobilka ku haboon */
+        /* Glassmorphic Responsive Table Wrapper */
         .table-responsive {
             width: 100%;
             overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            margin-top: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            margin-top: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
         table {
             width: 100%;
-            border-collapse: collapse;
-            min-width: 700px;
-        }
-
-        th, td {
-            padding: 12px 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-            font-size: 0.95rem;
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 750px;
+            background: white;
         }
 
         th {
-            background-color: var(--primary-color);
-            color: white;
+            background-color: #f8fafc;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            padding: 16px;
+            border-bottom: 2px solid #e2e8f0;
         }
 
-        tr:hover {
-            background-color: #f1f1f1;
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #edf2f7;
+            font-size: 0.95rem;
+            color: #334155;
         }
 
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: #f8fafc;
+        }
+
+        /* Control Panel Buttons */
         .action-buttons {
             display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
+            gap: 8px;
         }
 
         .btn-warning-action, .btn-reverse-action {
             border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
+            padding: 8px 14px;
+            border-radius: 10px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
             font-size: 0.85rem;
-            flex: 1;
-            min-width: 85px;
-            text-align: center;
+            font-family: inherit;
+            transition: all 0.2s ease;
         }
 
         .btn-warning-action {
-            background-color: var(--danger-color);
+            background-color: #fee2e2;
+            color: var(--danger);
+        }
+
+        .btn-warning-action:hover {
+            background-color: var(--danger);
             color: white;
         }
 
         .btn-reverse-action {
-            background-color: #27ae60;
-            color: white;
+            background-color: #d1fae5;
+            color: var(--success);
         }
 
         .btn-reverse-action:hover {
-            background-color: #219653;
-        }
-
-        .badge {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
+            background-color: var(--success);
             color: white;
+        }
+
+        /* Status Badges */
+        .badge {
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
             display: inline-block;
-            text-align: center;
         }
 
-        .badge.safe { background-color: var(--success-color); }
-        .badge.risk { background-color: var(--danger-color); }
+        .badge.safe {
+            background-color: #d1fae5;
+            color: var(--success);
+        }
 
+        .badge.risk {
+            background-color: #fee2e2;
+            color: var(--danger);
+        }
+
+        /* Luxury Result Card for Students */
         .student-card {
-            background: #fff;
-            border: 2px solid #ddd;
-            padding: 20px 15px;
-            border-radius: 8px;
-            margin-top: 20px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 25px;
+            border-radius: 20px;
+            margin-top: 25px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
             text-align: center;
         }
 
-        .alert-box {
-            background-color: #fde8e8;
-            color: var(--danger-color);
-            border: 1px solid var(--danger-color);
-            padding: 15px;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-top: 15px;
-            font-size: 0.9rem;
-            animation: blink 1.5s infinite;
+        .student-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #1e293b;
         }
 
+        .student-info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+        .student-info-row:last-of-type {
+            border-bottom: none;
+        }
+
+        /* Custom Animated Alert Notification */
+        .alert-box {
+            background-color: #fff5f5;
+            color: var(--danger);
+            border: 1px solid #fed7d7;
+            padding: 16px;
+            border-radius: 14px;
+            font-weight: 600;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.05);
+        }
+
+        /* Footer Branding */
         footer {
             text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            background-color: #2c3e50;
-            color: white;
-            font-weight: bold;
+            margin-top: 50px;
+            padding: 24px;
+            color: var(--text-muted);
+            font-weight: 600;
             font-size: 0.9rem;
-            border-top: 3px solid #2ecc71;
+            border-top: 1px solid #e2e8f0;
         }
 
-        @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Wixii ka yar shaashadaha moobilka (Responsive Adjustments) */
+        /* Media Queries for Mobile Screens */
         @media (max-width: 600px) {
+            header {
+                padding: 45px 15px;
+                border-radius: 0 0 25px 25px;
+            }
             header h1 {
-                font-size: 1.4rem;
+                font-size: 1.6rem;
             }
             header p {
-                font-size: 0.85rem;
+                font-size: 0.95rem;
+            }
+            .container {
+                padding: 20px;
+                width: 94%;
             }
             .tabs {
-                flex-direction: column;
-                gap: 5px;
+                border-radius: 12px;
+                padding: 4px;
             }
             .tab-btn {
                 padding: 10px;
                 font-size: 0.9rem;
+                border-radius: 8px;
             }
-            th, td {
-                padding: 10px 8px;
-                font-size: 0.85rem;
+            td, th {
+                padding: 12px 10px;
+            }
+            .action-buttons {
+                flex-direction: column;
+                gap: 4px;
+            }
+            .btn-warning-action, .btn-reverse-action {
+                width: 100%;
+                text-align: center;
             }
         }
     </style>
@@ -286,14 +414,15 @@
     <!-- 1. BOGGA ARDAYGA -->
     <div id="student-panel" class="panel active">
         <h2>Ugu Kaalay Xaaladda Dhaqankaaga</h2>
-        <p style="color: #666; font-size: 13px; margin-bottom: 15px;">(Waxaad ku raadin kartaa ID-gaaga oo qura ama Magacaaga oo qura)</p>
+        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">(Waxaad ku raadin kartaa ID-gaaga oo qura ama Magacaaga oo qura)</p>
+        
         <div class="form-group">
             <label>Geli ID-gaaga:</label>
             <input type="text" id="search-id" placeholder="Tusaale: C1250095">
         </div>
         <div class="form-group">
             <label>Geli Magacaaga:</label>
-            <input type="text" id="search-name" placeholder="Geli magacaaga">
+            <input type="text" id="search-name" placeholder="Geli magacaaga oo saddexan">
         </div>
         <button class="btn-submit" onclick="checkStudentStatus()">Eeg Xogta</button>
 
@@ -303,7 +432,7 @@
     <!-- 2. DASHBOARD-KA GUDDIGA (ADMIN) -->
     <div id="admin-panel" class="panel">
         <h2>Maamulidda Sharciga Fasalka (74 Arday)</h2>
-        <p style="font-size: 14px; color: #555; margin-bottom: 15px;">Kaliya Guddiga fasalka ayaa xaq u leh inay halkan dhibco ka gooyaan ardayga sawaxanka sameeya.</p>
+        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Kaliya Guddiga fasalka ayaa xaq u leh inay halkan dhibco ka gooyaan ardayga sawaxanka sameeya.</p>
         
         <div class="search-box">
             <label><strong>Si dhakhso ah u raadi arday:</strong></label>
@@ -345,8 +474,8 @@
 </script>
 
 <script>
-    const ADMIN_PASSWORD = "Sacad2026"; 
-    const MASTER_RETURN_PIN = "2028"; 
+    const ADMIN_PASSWORD = "Sacad2026";
+    const MASTER_RETURN_PIN = "2028";
 
     const officialStudentsList = [
         { id: "C1250082", name: "Hamza Mohamednur yare Ali" },
@@ -478,10 +607,10 @@
             tbody.innerHTML += `
                 <tr class="admin-row">
                     <td>${index + 1}</td>
-                    <td class="st-id">${student.id}</td>
-                    <td class="st-name">${student.name}</td>
-                    <td><strong style="color: ${student.conduct <= 25 ? 'red' : 'green'}">${student.conduct}%</strong></td>
-                    <td><span style="color: red; font-weight: bold;">⚠️ ${student.violations}</span></td>
+                    <td class="st-id" style="font-weight: 600; color: var(--primary);">${student.id}</td>
+                    <td class="st-name" style="font-weight: 500;">${student.name}</td>
+                    <td><strong style="color: ${student.conduct <= 25 ? 'var(--danger)' : 'var(--success)'}; font-size: 1.05rem;">${student.conduct}%</strong></td>
+                    <td><span style="color: var(--danger); font-weight: bold;">⚠️ ${student.violations}</span></td>
                     <td>${statusBadge}</td>
                     <td>
                         <div class="action-buttons">
@@ -580,7 +709,6 @@
         }
     }
 
-    // SHAQADA LABEDELAY: Halkan waxaa laga saaray khadkii muujinayay khaladaadka (violations)
     function checkStudentStatus() {
         const inputId = document.getElementById('search-id').value.trim().toLowerCase();
         const inputName = document.getElementById('search-name').value.trim().toLowerCase();
@@ -588,7 +716,7 @@
 
         if (!inputId && !inputName) {
             resultDiv.style.display = 'block';
-            resultDiv.innerHTML = `<p style="color: red; font-weight: bold; margin-top:15px;">❌ Fadlan geli ID-gaaga ama Magacaaga si aad u raadiso.</p>`;
+            resultDiv.innerHTML = `<p style="color: var(--danger); font-weight: bold; margin-top:20px;">❌ Fadlan geli ID-gaaga ama Magacaaga si aad u raadiso.</p>`;
             return;
         }
 
@@ -600,7 +728,7 @@
 
         if (!student) {
             resultDiv.style.display = 'block';
-            resultDiv.innerHTML = `<p style="color: red; font-weight: bold; margin-top:15px;">❌ Waa cilad! Ma jirto xog u dhabata ID-ga ama Magaca aad gelisay. Fadlan hubi.</p>`;
+            resultDiv.innerHTML = `<p style="color: var(--danger); font-weight: bold; margin-top:20px;">❌ Waa cilad! Ma jirto xog u dhabata ID-ga ama Magaca aad gelisay. Fadlan hubi.</p>`;
             return;
         }
 
@@ -614,14 +742,24 @@
                 </div>
             `;
         } else {
-            warningMessage = `<p style="color: green; font-weight: bold; margin-top:15px;">✅ Xaaladda dhaqankaagu waa deggantahay. Waxaad haysataa ${student.conduct}%.</p>`;
+            warningMessage = `<p style="color: var(--success); font-weight: bold; margin-top:20px;">✅ Xaaladda dhaqankaagu waa deggantahay. Waxaad haysataa ${student.conduct}%.</p>`;
         }
 
         resultDiv.innerHTML = `
             <div class="student-card">
-                <h3>Xogta Dhaqanka Ardayga: ${student.name}</h3>
-                <p><strong>ID-gaaga:</strong> ${student.id}</p>
-                <p><strong>Boqolleyda Dhaqanka:</strong> <span style="font-size: 20px; font-weight: bold; color: ${student.conduct <= 25 ? 'red' : 'green'}">${student.conduct}%</span></p>
+                <h3>Xogta Dhaqanka Ardayga</h3>
+                <div class="student-info-row">
+                    <span><strong>Magaca:</strong></span>
+                    <span>${student.name}</span>
+                </div>
+                <div class="student-info-row">
+                    <span><strong>ID-gaaga:</strong></span>
+                    <span style="color: var(--primary); font-weight: 600;">${student.id}</span>
+                </div>
+                <div class="student-info-row">
+                    <span><strong>Boqolleyda Dhaqanka:</strong></span>
+                    <span style="font-size: 1.2rem; font-weight: 700; color: ${student.conduct <= 25 ? 'var(--danger)' : 'var(--success)'}">${student.conduct}%</span>
+                </div>
                 ${warningMessage}
             </div>
         `;
