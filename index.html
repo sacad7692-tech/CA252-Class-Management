@@ -170,31 +170,6 @@
             box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
         }
 
-        /* Luxury Gradient Button */
-        button.btn-submit {
-            background: var(--gradient);
-            color: white;
-            padding: 15px 24px;
-            border: none;
-            border-radius: 14px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 1.1rem;
-            font-weight: 600;
-            font-family: inherit;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
-            transition: all 0.2s ease;
-        }
-
-        button.btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
-        }
-
-        button.btn-submit:active {
-            transform: translateY(0);
-        }
-
         .search-box {
             margin-bottom: 25px;
             padding: 20px;
@@ -310,6 +285,7 @@
             margin-top: 25px;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
             text-align: center;
+            animation: fadeIn 0.3s ease-in-out;
         }
 
         .student-card h3 {
@@ -414,19 +390,14 @@
     <!-- 1. BOGGA ARDAYGA -->
     <div id="student-panel" class="panel active">
         <h2>Ugu Kaalay Xaaladda Dhaqankaaga</h2>
-        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">(Waxaad ku raadin kartaa ID-gaaga oo qura ama Magacaaga oo qura)</p>
+        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Xogtu si toos ah ayay u soo baxaysaa marka aad qorayso Magacaaga ama ID-gaaga.</p>
         
         <div class="form-group">
-            <label>Geli ID-gaaga:</label>
-            <input type="text" id="search-id" placeholder="Tusaale: C1250095">
+            <label>Ku qor ID ama Magacaaga halkan:</label>
+            <input type="text" id="search-input" placeholder="Tusaale: C1250095 ama Sa'ad..." oninput="checkStudentStatus()">
         </div>
-        <div class="form-group">
-            <label>Geli Magacaaga:</label>
-            <input type="text" id="search-name" placeholder="Geli magacaaga oo saddexan">
-        </div>
-        <button class="btn-submit" onclick="checkStudentStatus()">Eeg Xogta</button>
 
-        <div id="student-result" style="display: none;"></div>
+        <div id="student-result"></div>
     </div>
 
     <!-- 2. DASHBOARD-KA GUDDIGA (ADMIN) -->
@@ -459,7 +430,7 @@
 </div>
 
 <footer>
-    💻 Designed & Developed by Sacad Siciid Caraaye © 2026
+    💻 All Copyright waxaa diyaariyay Sacad siciid caraaye
 </footer>
 
 <!-- Khadka kicinaya Service Worker-ka si uu App u noqdo (PWA) -->
@@ -709,30 +680,29 @@
         }
     }
 
+    // SHAQADA LIVE SEARCH-KA AH (AUTO-LOAD)
     function checkStudentStatus() {
-        const inputId = document.getElementById('search-id').value.trim().toLowerCase();
-        const inputName = document.getElementById('search-name').value.trim().toLowerCase();
+        const query = document.getElementById('search-input').value.trim().toLowerCase();
         const resultDiv = document.getElementById('student-result');
 
-        if (!inputId && !inputName) {
-            resultDiv.style.display = 'block';
-            resultDiv.innerHTML = `<p style="color: var(--danger); font-weight: bold; margin-top:20px;">❌ Fadlan geli ID-gaaga ama Magacaaga si aad u raadiso.</p>`;
+        // Haddii sanduuqu maran yahay, nadiifi shaashadda
+        if (query === "") {
+            resultDiv.style.display = 'none';
+            resultDiv.innerHTML = "";
             return;
         }
 
-        const student = students.find(s => {
-            const matchId = inputId && s.id.toLowerCase() === inputId;
-            const matchName = inputName && s.name.toLowerCase().includes(inputName);
-            return matchId || matchName;
-        });
-
-        if (!student) {
-            resultDiv.style.display = 'block';
-            resultDiv.innerHTML = `<p style="color: var(--danger); font-weight: bold; margin-top:20px;">❌ Waa cilad! Ma jirto xog u dhabata ID-ga ama Magaca aad gelisay. Fadlan hubi.</p>`;
-            return;
-        }
+        const student = students.find(s => 
+            s.id.toLowerCase() === query || 
+            s.name.toLowerCase().includes(query)
+        );
 
         resultDiv.style.display = 'block';
+
+        if (!student) {
+            resultDiv.innerHTML = `<p style="color: var(--danger); font-weight: bold; margin-top:20px; text-align:center;">❌ Ma jirto xog u dhabata ID-ga ama Magaca aad gelisay.</p>`;
+            return;
+        }
         
         let warningMessage = '';
         if (student.conduct <= 25) {
@@ -745,6 +715,7 @@
             warningMessage = `<p style="color: var(--success); font-weight: bold; margin-top:20px;">✅ Xaaladda dhaqankaagu waa deggantahay. Waxaad haysataa ${student.conduct}%.</p>`;
         }
 
+        // Halkan waxaa si buuxda looga saaray khadkii khaladaadka (violations) si ardaygu uusan u arkin
         resultDiv.innerHTML = `
             <div class="student-card">
                 <h3>Xogta Dhaqanka Ardayga</h3>
@@ -753,7 +724,7 @@
                     <span>${student.name}</span>
                 </div>
                 <div class="student-info-row">
-                    <span><strong>ID-gaaga:</strong></span>
+                    <span><strong>ID-ga:</strong></span>
                     <span style="color: var(--primary); font-weight: 600;">${student.id}</span>
                 </div>
                 <div class="student-info-row">
