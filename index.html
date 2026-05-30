@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CA252 Class Behavior Management System</title>
+    
+    <!-- Khadka isku xiraya Manifest-ka App-ka (PWA) -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2c3e50">
+
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -140,7 +145,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 700px; /* Tani waxay hortegeysaa in jadwalku isku ururo moobilka */
+            min-width: 700px;
         }
 
         th, td {
@@ -162,7 +167,7 @@
         .action-buttons {
             display: flex;
             gap: 5px;
-            flex-wrap: wrap; /* badhamada hoos ayay u dhacayaan hadii ay boos waayaan */
+            flex-wrap: wrap;
         }
 
         .btn-warning-action, .btn-reverse-action {
@@ -251,7 +256,7 @@
                 font-size: 0.85rem;
             }
             .tabs {
-                flex-direction: column; /* Badhamada sare hoos isku radday moobilka */
+                flex-direction: column;
                 gap: 5px;
             }
             .tab-btn {
@@ -305,7 +310,6 @@
             <input type="text" id="admin-search" onkeyup="filterAdminTable()" placeholder="Ku qor magac ama ID si aad u hesho...">
         </div>
 
-        <!-- Jadwalka lagu dhex qariyo Responsive Wrapper -->
         <div class="table-responsive">
             <table>
                 <thead>
@@ -328,6 +332,17 @@
 <footer>
     💻 Designed & Developed by Sacad Siciid Caraaye © 2026
 </footer>
+
+<!-- Khadka kicinaya Service Worker-ka si uu App u noqdo (PWA) -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js')
+        .then(reg => console.log('Service Worker Registered!', reg))
+        .catch(err => console.log('Service Worker Failed!', err));
+    });
+  }
+</script>
 
 <script>
     const ADMIN_PASSWORD = "Sacad2026"; 
@@ -565,6 +580,7 @@
         }
     }
 
+    // SHAQADA LABEDELAY: Halkan waxaa laga saaray khadkii muujinayay khaladaadka (violations)
     function checkStudentStatus() {
         const inputId = document.getElementById('search-id').value.trim().toLowerCase();
         const inputName = document.getElementById('search-name').value.trim().toLowerCase();
@@ -605,7 +621,6 @@
             <div class="student-card">
                 <h3>Xogta Dhaqanka Ardayga: ${student.name}</h3>
                 <p><strong>ID-gaaga:</strong> ${student.id}</p>
-                <p><strong>Tirada sawaxanka lagugu qoray:</strong> <span style="color: red; font-weight:bold;">⚠️ ${student.violations} jeer</span></p>
                 <p><strong>Boqolleyda Dhaqanka:</strong> <span style="font-size: 20px; font-weight: bold; color: ${student.conduct <= 25 ? 'red' : 'green'}">${student.conduct}%</span></p>
                 ${warningMessage}
             </div>
