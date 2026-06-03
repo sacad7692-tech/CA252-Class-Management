@@ -450,8 +450,20 @@
     Designed & developed by <span>Sacad siciid caraaye</span>
 </footer>
 
-<!-- JavaScript (Koodhkii Xogta & Isbeddelada Cusub) -->
+<!-- Koodhka Isku-xirka Firebase (SDK v9 Compat) -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
 <script>
+    // 1. Dejinta Cilada Firebase (Toos ugu xiran database-kaaga rasmiga ah sxb)
+    const firebaseConfig = {
+        databaseURL: "https://ca252-system-ff4a8-default-rtdb.firebaseio.com/" 
+    };
+
+    // Bilaabidda Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
     const ADMIN_PASSWORD = "Sacad2026";
     const MASTER_RETURN_PIN = "2028";
 
@@ -532,20 +544,33 @@
         { id: "C1250535", name: "Muhsin Abdulkadir Yusuf" }
     ];
 
-    let students = JSON.parse(localStorage.getItem('guddi_real_students'));
+    let students = [];
 
-    if (!students) {
-        students = officialStudentsList.map(s => ({
-            id: s.id,
-            name: s.name,
-            conduct: 100, 
-            violations: 0
-        }));
-        saveData();
-    }
+    // 2. Toos uga akhriso xogta Firebase (Live Listening)
+    db.ref('students_behavior').on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            students = data;
+        } else {
+            // Haddii database-ku madhan yahay, ku shub liiska ardayda markii ugu horreysay
+            students = officialStudentsList.map(s => ({
+                id: s.id,
+                name: s.name,
+                conduct: 100, 
+                violations: 0
+            }));
+            saveData();
+        }
+        
+        // Isbeddel kasta oo dhaca si toos ah u cusboonaysii shaashadda
+        if (document.getElementById('admin-panel').classList.contains('active')) {
+            renderAdminTable();
+        }
+        checkStudentStatus();
+    });
 
     function saveData() {
-        localStorage.setItem('guddi_real_students', JSON.stringify(students));
+        db.ref('students_behavior').set(students);
     }
 
     function openAdminPanel() {
@@ -664,7 +689,6 @@
         const resultDiv = document.getElementById('student-result');
 
         if (query === "") {
-            resultDiv.style.display = 'none';
             return;
         }
 
@@ -681,6 +705,8 @@
                 ? `<div class="alert-box">🚨 DIGNIIN KULUL: Waxaad fasalka ka samaysay sawaxan badan, dhibcahaaga dhaqankuna waxay hoos u dhaceen ${student.conduct}%.</div>`
                 : `<p style="color: var(--success); font-weight: bold; margin-top:20px;">✅ Xaaladda dhaqankaagu waa deggantahay. Waxaad haysataa ${student.conduct}%.</p>`;
 
+            // Halkan waxaa laga beddelay "Xogta Dhaqanka Ardayga" oo laga dhigay "Xogtaada Dhaqanka"
+            // Sidoo kale waxaa laga saaray "Khaladaadka/Violations" si aan ardaygu u arkin inta jeer ee uu khaldamay
             resultDiv.innerHTML = `
                 <div class="student-card">
                     <h3>Xogtaada Dhaqanka</h3>
@@ -696,10 +722,12 @@
 
     function resetSearch() {
         const inputField = document.getElementById('search-input');
-        inputField.value = "";
-        document.getElementById('student-search-area').style.display = 'block';
-        document.getElementById('student-result').style.display = 'none';
-        inputField.focus();
+        if(inputField) {
+            inputField.value = "";
+            document.getElementById('student-search-area').style.display = 'block';
+            document.getElementById('student-result').style.display = 'none';
+            inputField.focus();
+        }
     }
 </script>
 
