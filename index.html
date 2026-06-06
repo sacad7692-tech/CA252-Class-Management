@@ -371,7 +371,6 @@
             background: var(--primary-dark);
         }
 
-        /* Badhanka Ka baxa ee Admin Panel-ka */
         .admin-header-flex {
             display: flex;
             justify-content: space-between;
@@ -379,22 +378,6 @@
             flex-wrap: wrap;
             gap: 15px;
             margin-bottom: 20px;
-        }
-
-        .btn-logout {
-            background-color: var(--danger);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: background 0.2s ease;
-        }
-
-        .btn-logout:hover {
-            background-color: #b91c1c;
         }
 
         footer {
@@ -501,10 +484,8 @@
             <div>
                 <h2>Maamulidda Sharciga Fasalka (74 Arday)</h2>
                 <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 5px;">Kaliya Guddiga fasalka ayaa xaq u leh inay halkan dhibco ka gooyaan ardayga.</p>
-                <!-- Qaybtii 'Admin-ka hadda furan' waa laga saaray halkan si buuxda -->
             </div>
-            <!-- Badhanka Logout-ka si toos ah looga baxo -->
-            <button class="btn-logout" onclick="adminLogout()">🔒 Ka Bax Dashboard-ka</button>
+            <!-- Badhankii Logout-ka gacanta halkan waa laga saaray si buuxda -->
         </div>
         
         <div class="search-box">
@@ -701,6 +682,7 @@
         }
     }
 
+    // SHAQADA BADASHA TABS-KA (WUXUU LIVE U AUTO-LOGOUT GARAYNAYAA ADMIN-KA)
     function switchTab(panelId) {
         if (panelId === 'student-panel') {
             adminLogoutSilently(); 
@@ -722,14 +704,7 @@
         }
     }
 
-    function adminLogout() {
-        currentAdmin = "";
-        document.getElementById('admin-search').value = "";
-        document.getElementById('btn-admin-tab').setAttribute('onclick', "switchTab('admin-login-panel')");
-        switchTab('student-panel');
-        alert("🔒 Si guul leh ayaad uga baxday bogga guddiga!");
-    }
-
+    // KA BAXIDDA IKHOOD AH (AUTO LOGOUT MARKA BOGGA ARDAYGA LA RIIXO)
     function adminLogoutSilently() {
         currentAdmin = "";
         document.getElementById('admin-search').value = "";
