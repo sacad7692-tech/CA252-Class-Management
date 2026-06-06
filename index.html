@@ -445,7 +445,7 @@
 <div class="container">
     <div class="tabs">
         <button class="tab-btn active" id="btn-student-tab" onclick="switchTab('student-panel')">Bogga Ardayga</button>
-        <button class="tab-btn" id="btn-admin-tab" onclick="switchTab('admin-login-panel')">Dashboard-ka Guddiga (Admin)</button>
+        <button class="tab-btn" id="btn-admin-tab" onclick="switchTab('admin-login-panel')">Bogga Guddiga</button>
     </div>
 
     <!-- 1. BOGGA ARDAYGA -->
@@ -466,22 +466,12 @@
     <!-- 2. BOGGA LOGIN-KA GUDDIGA -->
     <div id="admin-login-panel" class="panel">
         <div class="login-card">
-            <h2 style="text-align: center; margin-bottom: 15px;">Guddiga Maamulka</h2>
-            <p style="text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Dooro magacaaga kaddibna geli password-kaaga gaarka ah.</p>
+            <h2 style="text-align: center; margin-bottom: 15px;">Gudiga CA252</h2>
+            <p style="text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Fadlan si dhow u qor magacaaga iyo password-kaaga gaarka ah.</p>
             
             <div class="form-group">
-                <label>Dooro Magacaaga:</label>
-                <select id="login-admin-name">
-                    <option value="">-- Dooro Admin --</option>
-                    <option value="Sacad Siciid Caraaye">Sacad Siciid Caraaye (Kaba Class)</option>
-                    <option value="Shafie Abdihalim Ali">Shafie Abdihalim Ali</option>
-                    <option value="Nasro Mohamed Abdi">Nasro Mohamed Abdi</option>
-                    <option value="Rayan Mohamed Hassan">Rayan Mohamed Hassan</option>
-                    <option value="Hassan Abdikhadir Hassan">Hassan Abdikhadir Hassan</option>
-                    <option value="Nasteha Salad Dahir">Nasteha Salad Dahir</option>
-                    <option value="Hodman Mohamed Heydar">Hodman Mohamed Heydar</option>
-                    <option value="Abdullahi Ahmed Yusuf">Abdullahi Ahmed Yusuf</option>
-                </select>
+                <label>Ku qor Magacaaga Admin-ka:</label>
+                <input type="text" id="login-admin-name" placeholder="Tusaale: Shafie Abdihalim Ali">
             </div>
 
             <div class="form-group">
@@ -492,7 +482,7 @@
                 </div>
             </div>
 
-            <button class="btn-login" onclick="processAdminLogin()">Gididda Dashboard-ka</button>
+            <button class="btn-login" onclick="processAdminLogin()">Enter</button>
         </div>
     </div>
 
@@ -536,7 +526,7 @@
 
     const MASTER_RETURN_PIN = "2028";
 
-    // Password-radii cusbaa ee qaabka (Magaca+Calaamada+CA252) halkan ayay ku jiraan sxb
+    // Password-radii adiga iyo guddiga sxb
     const adminAccounts = {
         "Sacad Siciid Caraaye": "Sacad_said123", 
         "Shafie Abdihalim Ali": "Shafie@CA252",
@@ -567,7 +557,6 @@
         { id: "C1250094", name: "Shafie Abdihalim Ali" },
         { id: "C1250095", name: "Sa'ad Said Araye" },
         { id: "C1250096", name: "Nasro Mohamed Abdi" },
-        { id: "C1250097", name: "Hamdi Hassan Jimale" },
         { id: "C1250101", name: "Fadumo Abdinasir Hassan" },
         { id: "C1250102", name: "Nasteha Salad Dahir" },
         { id: "C1250103", name: "Zeinab Mohamed Ali" },
@@ -667,24 +656,34 @@
     }
 
     function processAdminLogin() {
-        const adminName = document.getElementById('login-admin-name').value;
+        const inputName = document.getElementById('login-admin-name').value.trim();
         const adminPass = document.getElementById('login-admin-pass').value;
 
-        if (!adminName) {
-            alert("❌ Fadlan marka hore liiska ka dooro magacaaga!");
+        if (!inputName) {
+            alert("❌ Fadlan qor magacaaga Admin-ka!");
             return;
         }
 
-        if (adminAccounts[adminName] && adminAccounts[adminName] === adminPass) {
-            currentAdmin = adminName;
+        // Hubinta haddii magaca la qoray uu u jiro liiska guddiga si sax ah
+        let foundAdmin = null;
+        for (let name in adminAccounts) {
+            if (name.toLowerCase() === inputName.toLowerCase()) {
+                foundAdmin = name;
+                break;
+            }
+        }
+
+        if (foundAdmin && adminAccounts[foundAdmin] === adminPass) {
+            currentAdmin = foundAdmin;
             document.getElementById('active-admin-display').innerText = `👤 Admin-ka hadda furan: ${currentAdmin}`;
             
             document.getElementById('btn-admin-tab').setAttribute('onclick', "switchTab('admin-panel')");
             switchTab('admin-panel');
             
+            document.getElementById('login-admin-name').value = "";
             document.getElementById('login-admin-pass').value = "";
         } else {
-            alert("❌ Password-ku waa khaldan yahay!");
+            alert("❌ Magaca ama Password-ka ayaa khaldan!");
         }
     }
 
@@ -710,7 +709,6 @@
         const tbody = document.getElementById('admin-table-body');
         tbody.innerHTML = '';
 
-        // Hubinta in qofka soo galay uu yahay Sacad Siciid Caraaye
         const isSacad = (currentAdmin === "Sacad Siciid Caraaye");
 
         thead.innerHTML = `
