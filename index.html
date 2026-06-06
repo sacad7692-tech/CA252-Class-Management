@@ -8,7 +8,7 @@
     <!-- Google Fonts for Modern Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Khadka isku xiraya Manifest-ka App-ka (PWA) -->
     <link rel="manifest" href="manifest.json">
@@ -380,6 +380,22 @@
             margin-bottom: 20px;
         }
 
+        .history-list {
+            text-align: left;
+            font-size: 11px;
+            color: #475569;
+            line-height: 1.4;
+        }
+
+        .history-item {
+            margin-bottom: 3px;
+            padding-bottom: 3px;
+            border-bottom: 1px dashed #f1f5f9;
+        }
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
         footer {
             text-align: center;
             margin-top: 60px;
@@ -440,7 +456,7 @@
         <button class="tab-btn" id="btn-admin-tab" onclick="switchTab('admin-login-panel')">Bogga Guddiga</button>
     </div>
 
-    <!-- 1. BOGGA ARDAYGA (LIVE RAADIN) -->
+    <!-- 1. BOGGA ARDAYGA -->
     <div id="student-panel" class="panel active">
         <div id="student-search-area">
             <h2>Ugu Kaalay Xaaladda Dhaqankaaga</h2>
@@ -459,7 +475,7 @@
     <div id="admin-login-panel" class="panel">
         <div class="login-card">
             <h2 style="text-align: center; margin-bottom: 15px;">Gudiga CA252</h2>
-            <p style="text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Fadlan si dhow u qor magacaaga iyo password-kaaga gaarka ah.</p>
+            <p style="text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 20px;"></p>
             
             <div class="form-group">
                 <label>Ku qor Magacaaga Admin-ka:</label>
@@ -474,7 +490,8 @@
                 </div>
             </div>
 
-            <button class="btn-login" onclick="processAdminLogin()">Enter</button>
+            <!-- BUTTONKA INTERNA AH WAXAA LOO BADALAY LOGIN -->
+            <button class="btn-login" onclick="processAdminLogin()">Login</button>
         </div>
     </div>
 
@@ -485,7 +502,6 @@
                 <h2>Maamulidda Sharciga Fasalka (74 Arday)</h2>
                 <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 5px;">Kaliya Guddiga fasalka ayaa xaq u leh inay halkan dhibco ka gooyaan ardayga.</p>
             </div>
-            <!-- Badhankii Logout-ka gacanta halkan waa laga saaray si buuxda -->
         </div>
         
         <div class="search-box">
@@ -496,7 +512,7 @@
         <div class="table-responsive">
             <table>
                 <thead id="admin-table-head">
-                    <!-- Tiirarka halkan si dynamic ah ayaa loogu soo dhoweynayaa -->
+                    <!-- Tiirarka dynamic ah -->
                 </thead>
                 <tbody id="admin-table-body"></tbody>
             </table>
@@ -508,7 +524,7 @@
     Designed & developed by <span>Sacad siciid caraaye</span>
 </footer>
 
-<!-- Koodhka Isku-xirka Firebase (SDK v9 Compat) -->
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
@@ -622,8 +638,7 @@
                 name: s.name,
                 conduct: 100, 
                 violations: 0,
-                lastViolationBy: "",
-                lastViolationTime: ""
+                adminHistory: {} 
             }));
             saveData();
         }
@@ -671,7 +686,6 @@
 
         if (foundAdmin && adminAccounts[foundAdmin] === adminPass) {
             currentAdmin = foundAdmin;
-            
             document.getElementById('btn-admin-tab').setAttribute('onclick', "switchTab('admin-panel')");
             switchTab('admin-panel');
             
@@ -682,11 +696,15 @@
         }
     }
 
-    // SHAQADA BADASHA TABS-KA (WUXUU LIVE U AUTO-LOGOUT GARAYNAYAA ADMIN-KA)
     function switchTab(panelId) {
         if (panelId === 'student-panel') {
             adminLogoutSilently(); 
         }
+
+        const searchInput = document.getElementById('search-input');
+        const adminSearchInput = document.getElementById('admin-search');
+        if(searchInput) searchInput.value = "";
+        if(adminSearchInput) adminSearchInput.value = "";
 
         document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -695,7 +713,8 @@
         
         if (panelId === 'student-panel') {
             document.getElementById('btn-student-tab').classList.add('active');
-            clearStudentSearch();
+            document.getElementById('student-result').style.display = 'none';
+            document.getElementById('student-result').innerHTML = "";
         } else if (panelId === 'admin-login-panel') {
             document.getElementById('btn-admin-tab').classList.add('active');
         } else if (panelId === 'admin-panel') {
@@ -704,10 +723,8 @@
         }
     }
 
-    // KA BAXIDDA IKHOOD AH (AUTO LOGOUT MARKA BOGGA ARDAYGA LA RIIXO)
     function adminLogoutSilently() {
         currentAdmin = "";
-        document.getElementById('admin-search').value = "";
         document.getElementById('btn-admin-tab').setAttribute('onclick', "switchTab('admin-login-panel')");
     }
 
@@ -726,7 +743,7 @@
                 <th>Dhibcaha (%)</th>
                 <th>Khaladaadka</th>
                 <th>Xaaladda</th>
-                ${isSacad ? '<th>Ciddii Gaysay</th>' : ''}
+                ${isSacad ? '<th>Ciddii Gaysay (Tirada & Waqtiga)</th>' : ''}
                 <th>Actions</th>
             </tr>
         `;
@@ -737,9 +754,18 @@
                 statusBadge = `<span class="badge risk">🚨 RISKI</span>`;
             }
 
-            let historyText = (student.lastViolationBy && student.lastViolationBy !== "") 
-                ? `<span style="font-size: 11px; color:#64748b; font-weight:600;">By: ${student.lastViolationBy.split(' ')[0]}<br>${student.lastViolationTime.split(',')[1] || ''}</span>`
-                : `<span style="color:#cbd5e1;">-</span>`;
+            let historyHtml = `<div class="history-list">`;
+            if (student.adminHistory && Object.keys(student.adminHistory).length > 0) {
+                for (let adminName in student.adminHistory) {
+                    let record = student.adminHistory[adminName];
+                    let shortName = adminName.split(' ')[0]; 
+                    let timeOnly = record.time ? (record.time.split(',')[1] || record.time) : '';
+                    historyHtml += `<div class="history-item">👤 <strong>${shortName}</strong>: <span style="color:var(--danger); font-weight:700;">${record.count} jeer</span><br><span style="color:gray; font-size:10px;">🕒 ${timeOnly}</span></div>`;
+                }
+            } else {
+                historyHtml += `<span style="color:#cbd5e1;">- No history -</span>`;
+            }
+            historyHtml += `</div>`;
 
             tbody.innerHTML += `
                 <tr class="admin-row">
@@ -749,7 +775,7 @@
                     <td><strong style="color: ${student.conduct <= 25 ? 'var(--danger)' : 'var(--success)'};">${student.conduct}%</strong></td>
                     <td><span style="color: var(--danger); font-weight: bold;">⚠️ ${student.violations}</span></td>
                     <td>${statusBadge}</td>
-                    ${isSacad ? `<td>${historyText}</td>` : ''}
+                    ${isSacad ? `<td>${historyHtml}</td>` : ''}
                     <td>
                         <div class="action-buttons">
                             <button class="btn-warning-action" onclick="addViolation(${index})">❌ Qalad</button>
@@ -781,13 +807,25 @@
             students[index].conduct -= 5; 
             students[index].violations += 1; 
             
-            students[index].lastViolationBy = currentAdmin;
-            students[index].lastViolationTime = new Date().toLocaleString('so-SO', { hour12: true });
+            if (!students[index].adminHistory) {
+                students[index].adminHistory = {};
+            }
+
+            if (students[index].adminHistory[currentAdmin]) {
+                students[index].adminHistory[currentAdmin].count += 1;
+            } else {
+                students[index].adminHistory[currentAdmin] = { count: 1 };
+            }
+            
+            students[index].adminHistory[currentAdmin].time = new Date().toLocaleString('so-SO', { hour12: true });
 
             if (students[index].conduct < 0) students[index].conduct = 0;
+            
+            const adminSearchInput = document.getElementById('admin-search');
+            if(adminSearchInput) adminSearchInput.value = "";
+
             saveData();
             renderAdminTable();
-            filterAdminTable();
         }
     }
 
@@ -796,18 +834,24 @@
         if (pinInput === null) return; 
 
         if (pinInput === MASTER_RETURN_PIN) {
-            const optionInput = prompt("1) Wada celi dhammaan (100%)\n2) Hal khalad ka saar (+5%)\n3) Geli dhibco aad dooratay");
+            const optionInput = prompt("1) Wada celi dhammaan (100% & Nadiifi Taariikhda)\n2) Hal khalad ka saar (+5%)\n3) Geli dhibco aad dooratay");
             if (optionInput === null) return;
 
             if (optionInput === "1") {
                 students[index].conduct = 100;
                 students[index].violations = 0;
-                students[index].lastViolationBy = "";
-                students[index].lastViolationTime = "";
+                students[index].adminHistory = {}; 
             } else if (optionInput === "2") {
                 if (students[index].conduct < 100) {
                     students[index].conduct += 5;
                     if (students[index].violations > 0) students[index].violations -= 1;
+                    
+                    if (students[index].adminHistory && students[index].adminHistory[currentAdmin]) {
+                        students[index].adminHistory[currentAdmin].count -= 1;
+                        if (students[index].adminHistory[currentAdmin].count <= 0) {
+                            delete students[index].adminHistory[currentAdmin];
+                        }
+                    }
                 }
             } else if (optionInput === "3") {
                 const customPoints = parseInt(prompt("Geli dhibcaha (1-100):"));
@@ -815,14 +859,16 @@
                     students[index].conduct = customPoints;
                     if (customPoints === 100) {
                         students[index].violations = 0;
-                        students[index].lastViolationBy = "";
-                        students[index].lastViolationTime = "";
+                        students[index].adminHistory = {};
                     }
                 }
             }
+
+            const adminSearchInput = document.getElementById('admin-search');
+            if(adminSearchInput) adminSearchInput.value = "";
+
             saveData();
             renderAdminTable();
-            filterAdminTable();
         } else {
             alert("❌ PIN khaldan!");
         }
@@ -866,16 +912,6 @@
                     🔍 Ma jiro arday la helay oo leh xogtaas... Fadlan sii wad qorista.
                 </div>
             `;
-        }
-    }
-
-    function clearStudentSearch() {
-        const inputField = document.getElementById('search-input');
-        if(inputField) {
-            inputField.value = "";
-            document.getElementById('student-result').style.display = 'none';
-            document.getElementById('student-result').innerHTML = "";
-            inputField.focus();
         }
     }
 </script>
