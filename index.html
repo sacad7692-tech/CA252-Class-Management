@@ -16,7 +16,6 @@
 
     <style>
         :root {
-            /* Midabo aad u soo jiidasho leh (Premium Dark Blue & Indigo) */
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
             --secondary: #4f46e5;
@@ -44,7 +43,6 @@
             padding-bottom: 40px;
         }
 
-        /* Modern Gradient Header */
         header {
             background: var(--gradient);
             color: white;
@@ -82,10 +80,9 @@
             font-weight: 500;
         }
 
-        /* Modern Layout Container */
         .container {
             width: 92%;
-            max-width: 1000px;
+            max-width: 1100px;
             margin: -40px auto 0 auto;
             padding: 35px;
             background: rgba(255, 255, 255, 0.98);
@@ -95,7 +92,6 @@
             box-shadow: var(--card-shadow);
         }
 
-        /* Modern Elegant Navigation Tabs */
         .tabs {
             display: flex;
             background: #e2e8f0;
@@ -140,9 +136,9 @@
             color: #1e293b;
         }
 
-        /* Input Controls and Fields */
         .form-group {
             margin-bottom: 20px;
+            position: relative;
         }
 
         label {
@@ -153,7 +149,7 @@
             color: #475569;
         }
 
-        input {
+        input, select {
             width: 100%;
             padding: 16px 18px;
             border: 2px solid #cbd5e1;
@@ -165,11 +161,41 @@
             transition: all 0.25s ease;
         }
 
-        input:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: var(--primary);
             background-color: white;
             box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.15);
+        }
+
+        .password-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-wrapper input {
+            padding-right: 60px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            background: #e2e8f0;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #475569;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-password:hover {
+            background: #cbd5e1;
+            color: var(--text-main);
         }
 
         .search-box {
@@ -179,7 +205,6 @@
             border-radius: 16px;
         }
 
-        /* Glassmorphic Responsive Table Wrapper */
         .table-responsive {
             width: 100%;
             overflow-x: auto;
@@ -192,7 +217,7 @@
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
-            min-width: 750px;
+            min-width: 850px;
             background: white;
         }
 
@@ -222,7 +247,6 @@
             background-color: #f8fafc;
         }
 
-        /* Control Panel Buttons */
         .action-buttons {
             display: flex;
             gap: 8px;
@@ -259,7 +283,6 @@
             color: white;
         }
 
-        /* Status Badges */
         .badge {
             padding: 6px 12px;
             border-radius: 10px;
@@ -278,7 +301,6 @@
             color: var(--danger);
         }
 
-        /* Luxury Result Card for Students */
         .student-card {
             background: white;
             border: 1px solid #e2e8f0;
@@ -307,7 +329,6 @@
             border-bottom: none;
         }
 
-        /* Custom Animated Alert Notification */
         .alert-box {
             background-color: #fff5f5;
             color: var(--danger);
@@ -321,7 +342,6 @@
             box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.05);
         }
 
-        /* Reset Button Stylish */
         .btn-reset {
             margin-top: 25px;
             background: #f1f5f9;
@@ -340,7 +360,34 @@
             background: #cbd5e1;
         }
 
-        /* Footer Branding */
+        .login-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 30px;
+            border-radius: 24px;
+            max-width: 450px;
+            margin: 20px auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        .btn-login {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-login:hover {
+            background: var(--primary-dark);
+        }
+
         footer {
             text-align: center;
             margin-top: 60px;
@@ -361,7 +408,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Media Queries for Mobile Screens */
         @media (max-width: 600px) {
             header {
                 padding: 55px 15px;
@@ -398,8 +444,8 @@
 
 <div class="container">
     <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('student-panel')">Bogga Ardayga</button>
-        <button class="tab-btn" onclick="openAdminPanel()">Dashboard-ka Guddiga (Admin)</button>
+        <button class="tab-btn active" id="btn-student-tab" onclick="switchTab('student-panel')">Bogga Ardayga</button>
+        <button class="tab-btn" id="btn-admin-tab" onclick="switchTab('admin-login-panel')">Dashboard-ka Guddiga (Admin)</button>
     </div>
 
     <!-- 1. BOGGA ARDAYGA -->
@@ -417,10 +463,44 @@
         <div id="student-result" style="display: none;"></div>
     </div>
 
-    <!-- 2. DASHBOARD-KA GUDDIGA (ADMIN) -->
+    <!-- 2. BOGGA LOGIN-KA GUDDIGA -->
+    <div id="admin-login-panel" class="panel">
+        <div class="login-card">
+            <h2 style="text-align: center; margin-bottom: 15px;">Guddiga Maamulka</h2>
+            <p style="text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Dooro magacaaga kaddibna geli password-kaaga gaarka ah.</p>
+            
+            <div class="form-group">
+                <label>Dooro Magacaaga:</label>
+                <select id="login-admin-name">
+                    <option value="">-- Dooro Admin --</option>
+                    <option value="Sacad Siciid Caraaye">Sacad Siciid Caraaye (Kaba Class)</option>
+                    <option value="Shafie Abdihalim Ali">Shafie Abdihalim Ali</option>
+                    <option value="Nasro Mohamed Abdi">Nasro Mohamed Abdi</option>
+                    <option value="Rayan Mohamed Hassan">Rayan Mohamed Hassan</option>
+                    <option value="Hassan Abdikhadir Hassan">Hassan Abdikhadir Hassan</option>
+                    <option value="Nasteha Salad Dahir">Nasteha Salad Dahir</option>
+                    <option value="Hodman Mohamed Heydar">Hodman Mohamed Heydar</option>
+                    <option value="Abdullahi Ahmed Yusuf">Abdullahi Ahmed Yusuf</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Geli Password-kaaga:</label>
+                <div class="password-wrapper">
+                    <input type="password" id="login-admin-pass" placeholder="••••••••">
+                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility()">Show</button>
+                </div>
+            </div>
+
+            <button class="btn-login" onclick="processAdminLogin()">Gididda Dashboard-ka</button>
+        </div>
+    </div>
+
+    <!-- 3. DASHBOARD-KA GUDDIGA (ADMIN PANEL) -->
     <div id="admin-panel" class="panel">
         <h2>Maamulidda Sharciga Fasalka (74 Arday)</h2>
-        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Kaliya Guddiga fasalka ayaa xaq u leh inay halkan dhibco ka gooyaan ardayga sawaxanka sameeya.</p>
+        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 5px;">Kaliya Guddiga fasalka ayaa xaq u leh inay halkan dhibco ka gooyaan ardayga sawaxanka sameeya.</p>
+        <p id="active-admin-display" style="font-size: 13px; color: var(--primary); font-weight: 700; margin-bottom: 20px;"></p>
         
         <div class="search-box">
             <label><strong>Si dhakhso ah u raadi arday:</strong></label>
@@ -429,16 +509,8 @@
 
         <div class="table-responsive">
             <table>
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>ID</th>
-                        <th>Magaca Ardayga</th>
-                        <th>Dhibcaha (%)</th>
-                        <th>Khaladaadka</th>
-                        <th>Xaaladda</th>
-                        <th>Actions</th>
-                    </tr>
+                <thead id="admin-table-head">
+                    <!-- Tiirarka halkan si dynamic ah ayaa loogu soo dhoweynayaa -->
                 </thead>
                 <tbody id="admin-table-body"></tbody>
             </table>
@@ -455,17 +527,29 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
 <script>
-    // 1. Dejinta Cilada Firebase (Toos ugu xiran database-kaaga rasmiga ah sxb)
     const firebaseConfig = {
         databaseURL: "https://ca252-system-ff4a8-default-rtdb.firebaseio.com/" 
     };
 
-    // Bilaabidda Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    const ADMIN_PASSWORD = "Sacad2026";
     const MASTER_RETURN_PIN = "2028";
+
+    // Password-radii cusbaa ee qaabka (Magaca+Calaamada+CA252) halkan ayay ku jiraan sxb
+    const adminAccounts = {
+        "Sacad Siciid Caraaye": "Sacad_said123", 
+        "Shafie Abdihalim Ali": "Shafie@CA252",
+        "Nasro Mohamed Abdi": "Nasro#CA252",
+        "Rayan Mohamed Hassan": "Rayan*CA252",
+        "Hassan Abdikhadir Hassan": "Hassan@CA252",
+        "Nasteha Salad Dahir": "Nasteha#CA252",
+        "Hodman Mohamed Heydar": "Hodman*CA252",
+        "Abdullahi Ahmed Yusuf": "Yusuf@CA252"
+    };
+
+    let currentAdmin = ""; 
+    let students = [];
 
     const officialStudentsList = [
         { id: "C1250082", name: "Hamza Mohamednur yare Ali" },
@@ -544,25 +628,22 @@
         { id: "C1250535", name: "Muhsin Abdulkadir Yusuf" }
     ];
 
-    let students = [];
-
-    // 2. Toos uga akhriso xogta Firebase (Live Listening)
     db.ref('students_behavior').on('value', (snapshot) => {
         const data = snapshot.val();
         if (data) {
             students = data;
         } else {
-            // Haddii database-ku madhan yahay, ku shub liiska ardayda markii ugu horreysay
             students = officialStudentsList.map(s => ({
                 id: s.id,
                 name: s.name,
                 conduct: 100, 
-                violations: 0
+                violations: 0,
+                lastViolationBy: "",
+                lastViolationTime: ""
             }));
             saveData();
         }
         
-        // Isbeddel kasta oo dhaca si toos ah u cusboonaysii shaashadda
         if (document.getElementById('admin-panel').classList.contains('active')) {
             renderAdminTable();
         }
@@ -573,11 +654,36 @@
         db.ref('students_behavior').set(students);
     }
 
-    function openAdminPanel() {
-        const passwordInput = prompt("Fadlan geli Password-ka Guddiga Fasalka:");
-        if (passwordInput === ADMIN_PASSWORD) {
+    function togglePasswordVisibility() {
+        const passInput = document.getElementById('login-admin-pass');
+        const toggleBtn = document.querySelector('.toggle-password');
+        if (passInput.type === "password") {
+            passInput.type = "text";
+            toggleBtn.innerText = "Hide";
+        } else {
+            passInput.type = "password";
+            toggleBtn.innerText = "Show";
+        }
+    }
+
+    function processAdminLogin() {
+        const adminName = document.getElementById('login-admin-name').value;
+        const adminPass = document.getElementById('login-admin-pass').value;
+
+        if (!adminName) {
+            alert("❌ Fadlan marka hore liiska ka dooro magacaaga!");
+            return;
+        }
+
+        if (adminAccounts[adminName] && adminAccounts[adminName] === adminPass) {
+            currentAdmin = adminName;
+            document.getElementById('active-admin-display').innerText = `👤 Admin-ka hadda furan: ${currentAdmin}`;
+            
+            document.getElementById('btn-admin-tab').setAttribute('onclick', "switchTab('admin-panel')");
             switchTab('admin-panel');
-        } else if (passwordInput !== null) {
+            
+            document.getElementById('login-admin-pass').value = "";
+        } else {
             alert("❌ Password-ku waa khaldan yahay!");
         }
     }
@@ -587,25 +693,48 @@
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         
         document.getElementById(panelId).classList.add('active');
-        const tabs = document.querySelectorAll('.tab-btn');
-        if(panelId === 'admin-panel') {
-            tabs[1].classList.add('active');
-            renderAdminTable();
-        } else {
-            tabs[0].classList.add('active');
+        
+        if (panelId === 'student-panel') {
+            document.getElementById('btn-student-tab').classList.add('active');
             resetSearch();
+        } else if (panelId === 'admin-login-panel') {
+            document.getElementById('btn-admin-tab').classList.add('active');
+        } else if (panelId === 'admin-panel') {
+            document.getElementById('btn-admin-tab').classList.add('active');
+            renderAdminTable();
         }
     }
 
     function renderAdminTable() {
+        const thead = document.getElementById('admin-table-head');
         const tbody = document.getElementById('admin-table-body');
         tbody.innerHTML = '';
+
+        // Hubinta in qofka soo galay uu yahay Sacad Siciid Caraaye
+        const isSacad = (currentAdmin === "Sacad Siciid Caraaye");
+
+        thead.innerHTML = `
+            <tr>
+                <th>No.</th>
+                <th>ID</th>
+                <th>Magaca Ardayga</th>
+                <th>Dhibcaha (%)</th>
+                <th>Khaladaadka</th>
+                <th>Xaaladda</th>
+                ${isSacad ? '<th>Ciddii Gaysay</th>' : ''}
+                <th>Actions</th>
+            </tr>
+        `;
 
         students.forEach((student, index) => {
             let statusBadge = `<span class="badge safe">✅ Badbaado</span>`;
             if (student.conduct <= 25) {
                 statusBadge = `<span class="badge risk">🚨 RISKI</span>`;
             }
+
+            let historyText = (student.lastViolationBy && student.lastViolationBy !== "") 
+                ? `<span style="font-size: 11px; color:#64748b; font-weight:600;">By: ${student.lastViolationBy.split(' ')[0]}<br>${student.lastViolationTime.split(',')[1] || ''}</span>`
+                : `<span style="color:#cbd5e1;">-</span>`;
 
             tbody.innerHTML += `
                 <tr class="admin-row">
@@ -615,6 +744,7 @@
                     <td><strong style="color: ${student.conduct <= 25 ? 'var(--danger)' : 'var(--success)'};">${student.conduct}%</strong></td>
                     <td><span style="color: var(--danger); font-weight: bold;">⚠️ ${student.violations}</span></td>
                     <td>${statusBadge}</td>
+                    ${isSacad ? `<td>${historyText}</td>` : ''}
                     <td>
                         <div class="action-buttons">
                             <button class="btn-warning-action" onclick="addViolation(${index})">❌ Qalad</button>
@@ -645,6 +775,10 @@
         if (students[index].conduct > 0) {
             students[index].conduct -= 5; 
             students[index].violations += 1; 
+            
+            students[index].lastViolationBy = currentAdmin;
+            students[index].lastViolationTime = new Date().toLocaleString('so-SO', { hour12: true });
+
             if (students[index].conduct < 0) students[index].conduct = 0;
             saveData();
             renderAdminTable();
@@ -663,6 +797,8 @@
             if (optionInput === "1") {
                 students[index].conduct = 100;
                 students[index].violations = 0;
+                students[index].lastViolationBy = "";
+                students[index].lastViolationTime = "";
             } else if (optionInput === "2") {
                 if (students[index].conduct < 100) {
                     students[index].conduct += 5;
@@ -672,7 +808,11 @@
                 const customPoints = parseInt(prompt("Geli dhibcaha (1-100):"));
                 if (!isNaN(customPoints) && customPoints >= 1 && customPoints <= 100) {
                     students[index].conduct = customPoints;
-                    if (customPoints === 100) students[index].violations = 0;
+                    if (customPoints === 100) {
+                        students[index].violations = 0;
+                        students[index].lastViolationBy = "";
+                        students[index].lastViolationTime = "";
+                    }
                 }
             }
             saveData();
@@ -705,8 +845,6 @@
                 ? `<div class="alert-box">🚨 DIGNIIN KULUL: Waxaad fasalka ka samaysay sawaxan badan, dhibcahaaga dhaqankuna waxay hoos u dhaceen ${student.conduct}%.</div>`
                 : `<p style="color: var(--success); font-weight: bold; margin-top:20px;">✅ Xaaladda dhaqankaagu waa deggantahay. Waxaad haysataa ${student.conduct}%.</p>`;
 
-            // Halkan waxaa laga beddelay "Xogta Dhaqanka Ardayga" oo laga dhigay "Xogtaada Dhaqanka"
-            // Sidoo kale waxaa laga saaray "Khaladaadka/Violations" si aan ardaygu u arkin inta jeer ee uu khaldamay
             resultDiv.innerHTML = `
                 <div class="student-card">
                     <h3>Xogtaada Dhaqanka</h3>
