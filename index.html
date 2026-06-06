@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CA252 Class Behavior Management System</title>
     
+    <!-- Google Fonts for Modern Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- Khadka isku xiraya Manifest-ka App-ka (PWA) -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1e3a8a">
 
@@ -306,6 +308,7 @@
             border-radius: 24px;
             box-shadow: 0 15px 30px rgba(30, 58, 138, 0.08);
             text-align: center;
+            margin-top: 25px;
             animation: fadeIn 0.3s ease-in-out;
         }
 
@@ -338,24 +341,6 @@
             font-size: 0.95rem;
             line-height: 1.5;
             box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.05);
-        }
-
-        .btn-reset {
-            margin-top: 25px;
-            background: #f1f5f9;
-            color: var(--text-main);
-            border: 1px solid #cbd5e1;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: inherit;
-            transition: 0.2s ease;
-            width: 100%;
-        }
-
-        .btn-reset:hover {
-            background: #cbd5e1;
         }
 
         .login-card {
@@ -446,20 +431,24 @@
         <button class="tab-btn" id="btn-admin-tab" onclick="switchTab('admin-login-panel')">Bogga Guddiga</button>
     </div>
 
+    <!-- 1. BOGGA ARDAYGA (LIVE RAADIN) -->
     <div id="student-panel" class="panel active">
         <div id="student-search-area">
             <h2>Ugu Kaalay Xaaladda Dhaqankaaga</h2>
-            <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Xogtu si toos ah ayay u soo baxaysaa marka aad qorayso Magacaaga ama ID-gaaga.</p>
+            <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Xogtaadu si toos ah ayay u soo bixi doontaa marka aad qorto Magacaaga ama ID-gaaga.</p>
             
             <div class="form-group">
-                <label>Ku qor ID ama Magacaaga halkan:</label>
-                <input type="text" id="search-input" placeholder="Tusaale: C1250095 ama Sa'ad..." oninput="checkStudentStatus()">
+                <label>Geli ID ama Magacaaga:</label>
+                <!-- onkeyup waxay ka dhigeysaa in raadintu si toos ah u dhacdo -->
+                <input type="text" id="search-input" onkeyup="liveCheckStudentStatus()" placeholder="Tusaale: C1250095 ama Sacad...">
             </div>
         </div>
 
+        <!-- Kaarka Natiijadu halkan ayuu si toos ah ugu dhex milmi doonaa -->
         <div id="student-result" style="display: none;"></div>
     </div>
 
+    <!-- 2. BOGGA LOGIN-KA GUDDIGA -->
     <div id="admin-login-panel" class="panel">
         <div class="login-card">
             <h2 style="text-align: center; margin-bottom: 15px;">Gudiga CA252</h2>
@@ -467,7 +456,7 @@
             
             <div class="form-group">
                 <label>Ku qor Magacaaga Admin-ka:</label>
-                <input type="text" id="login-admin-name" placeholder="Tusaale: Sacad Siciid Caraaye">
+                <input type="text" id="login-admin-name" placeholder="Sacad Siciid Caraaye">
             </div>
 
             <div class="form-group">
@@ -482,6 +471,7 @@
         </div>
     </div>
 
+    <!-- 3. DASHBOARD-KA GUDDIGA (ADMIN PANEL) -->
     <div id="admin-panel" class="panel">
         <h2>Maamulidda Sharciga Fasalka (74 Arday)</h2>
         <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 5px;">Kaliya Guddiga fasalka ayaa xaq u leh inay halkan dhibco ka gooyaan ardayga sawaxanka sameeya.</p>
@@ -495,7 +485,8 @@
         <div class="table-responsive">
             <table>
                 <thead id="admin-table-head">
-                    </thead>
+                    <!-- Tiirarka halkan si dynamic ah ayaa loogu soo dhoweynayaa -->
+                </thead>
                 <tbody id="admin-table-body"></tbody>
             </table>
         </div>
@@ -506,6 +497,7 @@
     Designed & developed by <span>Sacad siciid caraaye</span>
 </footer>
 
+<!-- Koodhka Isku-xirka Firebase (SDK v9 Compat) -->
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
@@ -519,9 +511,9 @@
 
     const MASTER_RETURN_PIN = "2028";
 
-    // Password-radii adiga iyo guddiga sxb
+    // Password-radii guddiga
     const adminAccounts = {
-        "Sacad Siciid Caraaye": "Sacad_said123", 
+        "Sacad Siciid Caraaye": "Sacad_said123",
         "Shafie Abdihalim Ali": "Shafie@CA252",
         "Nasro Mohamed Abdi": "Nasro#CA252",
         "Rayan Mohamed Hassan": "Rayan*CA252",
@@ -575,7 +567,7 @@
         { id: "C1250129", name: "Usame Abdullahi Mohamed" },
         { id: "C1250131", name: "Ismail Abdi Waberi" },
         { id: "C1250133", name: "Abdullahi Ahmed Mohamed" },
-        { id: "C1250134", name: "Seynab Abdullahi Dirie" },
+        { id: "C1250134", name: "Transit Name" },
         { id: "C1250136", name: "Abdirisak Mohamed Abdiwahid" },
         { id: "C1250137", name: "Mohamed Muhudin Abdikarim" },
         { id: "C1250138", name: "sakariye Khalif Ali" },
@@ -629,7 +621,10 @@
         if (document.getElementById('admin-panel').classList.contains('active')) {
             renderAdminTable();
         }
-        checkStudentStatus();
+        // Haddii uu qoraal ku jiro sanduuqa ardayga marka Firebase isbeddesho, dib u cusbooneysii xogta ardayga
+        if (document.getElementById('student-panel').classList.contains('active')) {
+            liveCheckStudentStatus();
+        }
     });
 
     function saveData() {
@@ -657,7 +652,6 @@
             return;
         }
 
-        // Hubinta haddii magaca la qoray uu u jiro liiska guddiga si sax ah
         let foundAdmin = null;
         for (let name in adminAccounts) {
             if (name.toLowerCase() === inputName.toLowerCase()) {
@@ -688,7 +682,7 @@
         
         if (panelId === 'student-panel') {
             document.getElementById('btn-student-tab').classList.add('active');
-            resetSearch();
+            clearStudentSearch();
         } else if (panelId === 'admin-login-panel') {
             document.getElementById('btn-admin-tab').classList.add('active');
         } else if (panelId === 'admin-panel') {
@@ -814,22 +808,25 @@
         }
     }
 
-    function checkStudentStatus() {
+    // SHAQADA SI TOOS AH U SOO SAARAYSA XOGTA (LIVE SEARCH)
+    function liveCheckStudentStatus() {
         const query = document.getElementById('search-input').value.trim().toLowerCase();
-        const searchArea = document.getElementById('student-search-area');
         const resultDiv = document.getElementById('student-result');
 
+        // Haddii sanduuqu maran yahay, natiijada qari
         if (query === "") {
+            resultDiv.style.display = 'none';
+            resultDiv.innerHTML = "";
             return;
         }
 
+        // Raadi ardayga (Haddii ay tahay ID ama haddii magacu ka badan yahay ama la mid yahay 3 xaraf)
         const student = students.find(s => 
             s.id.toLowerCase() === query || 
             (query.length >= 3 && s.name.toLowerCase().includes(query))
         );
 
         if (student) {
-            searchArea.style.display = 'none';
             resultDiv.style.display = 'block';
             
             let warningMessage = student.conduct <= 25 
@@ -843,18 +840,25 @@
                     <div class="student-info-row"><span><strong>ID-ga:</strong></span><span style="color: var(--primary); font-weight:600;">${student.id}</span></div>
                     <div class="student-info-row"><span><strong>Boqolleyda Dhaqanka:</strong></span><span style="font-size: 1.2rem; font-weight:700; color: ${student.conduct <= 25 ? 'var(--danger)' : 'var(--success)'}">${student.conduct}%</span></div>
                     ${warningMessage}
-                    <button class="btn-reset" onclick="resetSearch()">⬅ Dib u laabo</button>
+                </div>
+            `;
+        } else {
+            // Haddii wax la qoray laakiin la waayo, tus qoraal yar oo caawinaad ah halkii aad ka keeni lahayd Alert dhibaysa ardayga
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `
+                <div style="text-align:center; padding: 20px; color: var(--text-muted); font-weight:600; background: #f8fafc; border-radius:16px; border: 1px dashed #cbd5e1; margin-top:25px;">
+                    🔍 Ma jiro arday la helay oo leh xogtaas... Fadlan sii wad qorista.
                 </div>
             `;
         }
     }
 
-    function resetSearch() {
+    function clearStudentSearch() {
         const inputField = document.getElementById('search-input');
         if(inputField) {
             inputField.value = "";
-            document.getElementById('student-search-area').style.display = 'block';
             document.getElementById('student-result').style.display = 'none';
+            document.getElementById('student-result').innerHTML = "";
             inputField.focus();
         }
     }
