@@ -889,7 +889,7 @@
         if (student) {
             resultDiv.style.display = 'block';
             
-            let warningMessage = student.conduct <= 25 
+            let warningMessage = student.conduct <= 50 
                 ? `<div class="alert-box">🚨 DIGNIIN KULUL: Waxaad fasalka ka samaysay sawaxan badan, dhibcahaaga dhaqankuna waxay hoos u dhaceen ${student.conduct}%.</div>`
                 : `<p style="color: var(--success); font-weight: bold; margin-top:20px;">✅ Xaaladda dhaqankaagu waa deggantahay. Waxaad haysataa ${student.conduct}%.</p>`;
 
